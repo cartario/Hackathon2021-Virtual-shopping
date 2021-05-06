@@ -3,6 +3,10 @@ import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 
 import { ViroARSceneNavigator } from 'react-viro';
 
+
+import {Provider} from 'react-redux'
+import store from './src/redux'
+
 import InitialARScene from './js/HelloWorldSceneAR';
 import ToyScene from './src/screens/ar-screen1';
 
@@ -48,7 +52,7 @@ const WelcomeScreen = ({ navigateTo }) => {
   );
 };
 
-export default function App() {
+ function App() {
   const [navigatorType, setNavigatorType] = React.useState(null);
 
   const _navigateTo = (navigatorType) => {
@@ -63,12 +67,20 @@ export default function App() {
     case NAVIGATOR_TYPES.screen1:
       return <ViroARSceneNavigator initialScene={{ scene: InitialARScene }} />;
     case NAVIGATOR_TYPES.screen2:
-      return <ViroARSceneNavigator initialScene={{ scene: ToyScene }} viroAppProps={{goBack: _getHome, navigateTo: _navigateTo}}/>;
+      return <ViroARSceneNavigator initialScene={{ scene: ToyScene }} viroAppProps={{navigateTo: _navigateTo}}/>;
     case NAVIGATOR_TYPES.login:
       return <LoginScreen goBack={_getHome}/>;
     default:
       return <WelcomeScreen navigateTo={_navigateTo} />;
   }
+}
+
+export default function ReduxApp() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  )
 }
 
 var localStyles = StyleSheet.create({
