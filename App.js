@@ -9,6 +9,7 @@ import store from './src/redux'
 
 import InitialARScene from './js/HelloWorldSceneAR';
 import ToyScene from './src/screens/ar-screen1';
+import HelloWorldSceneAR from './src/screens/HelloWorldSceneAR'
 
 import LoginScreen from './src/screens/Login';
 
@@ -65,7 +66,7 @@ const WelcomeScreen = ({ navigateTo }) => {
 
   switch (navigatorType) {
     case NAVIGATOR_TYPES.screen1:
-      return <ViroARSceneNavigator initialScene={{ scene: InitialARScene }} />;
+      return <ViroARSceneNavigator initialScene={{ scene: HelloWorldSceneAR }} />;
     case NAVIGATOR_TYPES.screen2:
       return <ViroARSceneNavigator initialScene={{ scene: ToyScene }} viroAppProps={{navigateTo: _navigateTo}}/>;
     case NAVIGATOR_TYPES.login:

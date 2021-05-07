@@ -4,7 +4,7 @@ const initialState = {
   hello: ''
 }
 
-const testSlice = createSlice({
+const slice = createSlice({
   name: 'test',
   initialState,
   reducers: {
@@ -14,6 +14,6 @@ const testSlice = createSlice({
   }
 });
 
-export const {setHello} = testSlice.actions;
+export const {setHello} = slice.actions;
 
-export default testSlice.reducer;
+export default slice.reducer;
