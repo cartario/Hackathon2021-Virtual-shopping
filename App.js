@@ -6,6 +6,7 @@ import { ViroARSceneNavigator } from 'react-viro';
 
 import {Provider} from 'react-redux'
 import store from './src/redux'
+import {NAVIGATOR_TYPES} from './src/utils'
 
 import InitialARScene from './js/HelloWorldSceneAR';
 import ToyScene from './src/screens/ar-screen1';
@@ -13,11 +14,11 @@ import HelloWorldSceneAR from './src/screens/HelloWorldSceneAR'
 
 import LoginScreen from './src/screens/Login';
 
-const NAVIGATOR_TYPES = {
-  screen1: 'AR',
-  screen2: 'VR',
-  login: 'login',
-};
+// const NAVIGATOR_TYPES = {
+//   screen1: 'AR',
+//   screen2: 'VR',
+//   login: 'login',
+// };
 
 const WelcomeScreen = ({ navigateTo }) => {
   return (
@@ -66,7 +67,7 @@ const WelcomeScreen = ({ navigateTo }) => {
 
   switch (navigatorType) {
     case NAVIGATOR_TYPES.screen1:
-      return <ViroARSceneNavigator initialScene={{ scene: HelloWorldSceneAR }} />;
+      return <ViroARSceneNavigator initialScene={{ scene: HelloWorldSceneAR }} viroAppProps={{navigateTo: _navigateTo}}/>;
     case NAVIGATOR_TYPES.screen2:
       return <ViroARSceneNavigator initialScene={{ scene: ToyScene }} viroAppProps={{navigateTo: _navigateTo}}/>;
     case NAVIGATOR_TYPES.login:

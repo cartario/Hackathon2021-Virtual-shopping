@@ -10,6 +10,8 @@ import {
   ViroMaterials
 } from 'react-viro';
 
+import {NAVIGATOR_TYPES} from '../utils'
+
 export default function Screen1 ({sceneNavigator}) {
   const [count, setCount] = React.useState(3);
 
@@ -17,7 +19,7 @@ export default function Screen1 ({sceneNavigator}) {
     // sceneNavigator.jump({scene: InitialARScene})
     // sceneNavigator.viroAppProps.goBack()
 
-    sceneNavigator.viroAppProps.navigateTo('login')
+    sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.login)
     // setCount(()=>{
     //   return count + 1;
     // })
