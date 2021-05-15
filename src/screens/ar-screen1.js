@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import InitialARScene from '../../js/HelloWorldSceneAR';
 
 import {  
   ViroARScene,
@@ -49,7 +48,7 @@ export default function Screen1 ({sceneNavigator}) {
 
 ViroMaterials.createMaterials({
   screen2: {
-    diffuseTexture: require('../../js/res/screen2.jpeg'),
+    diffuseTexture: require('../res/screen2.jpeg'),
   },  
 });
 

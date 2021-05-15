@@ -20,12 +20,10 @@ import {
 
 import useHttp from '../hooks/useHttp';
 
-import {NAVIGATOR_TYPES} from '../utils'
-
 const BASE_URL =
   'https://virtual-shoping-b52fd-default-rtdb.europe-west1.firebasedatabase.app/products.json';
 
-export default function Screen1({sceneNavigator}) {
+export default function Screen1() {
   const [text, setText] = React.useState('loading');
   const [spinner, setSpinner] = React.useState(true);
 
@@ -42,7 +40,7 @@ export default function Screen1({sceneNavigator}) {
   const handleHomeMode = async () => {
     const data = await request(BASE_URL);
     setText(JSON.stringify(data));    
-    sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.arProductInfo)
+    // this.props.sceneNavigator.viroAppProps.navigateTo('login')
   }
 
   const handleBackgroundLoaded = () => {
@@ -52,13 +50,6 @@ export default function Screen1({sceneNavigator}) {
   return (
     <ViroARScene onTrackingUpdated={_onInitialized}>
       <ViroAmbientLight color="#ffffff" />
-
-      <ViroSpinner
-        visible={spinner}
-        type="Light"
-        position={[0, 0, -2.5]}
-      />
-
       <Viro360Image
         format="RGBA8"
         rotation={[0, 90, 0]}
@@ -67,21 +58,38 @@ export default function Screen1({sceneNavigator}) {
         onLoadEnd={handleBackgroundLoaded}
       />
 
+      {/*Текст сверху*/}
+      <ViroText
+        onDrag={() => {}}
+        text={text}
+        scale={[0.5, 0.5, 0.5]}
+        position={[0, 2.5, -4]}
+        style={styles.helloWorldTextStyle}
+      />
+      
+      {/*Плашка с информацией*/}
       <ViroFlexView
-          style={styles.titleContainer}
-          position={[0, 3.5, -7]}
-          rotation={[10, 0, 0]}
-          height={2}
+        style={styles.titleContainer}
+        position={[0, 3.5, -7]}
+        rotation={[10, 0, 0]}
+        height={2}
+        width={4}
+        onClick={handleHomeMode}
+      >
+        <ViroText
+          style={styles.prodTitleText}
+          text={'загрузить данные с сервера'}
           width={4}
-          onClick={handleHomeMode}
-        >
-          <ViroText
-            style={styles.prodTitleText}
-            text={'загрузить данные с сервера'}
-            width={4}
-            height={0.5}
-          />
-        </ViroFlexView>
+          height={0.5}
+        />
+      </ViroFlexView>
+
+
+      <ViroSpinner
+        visible={spinner}
+        type="Light"
+        position={[0, 0, -2.5]}
+      />
 
         <ViroNode
           position={[-1, 0, -0.5]}
@@ -113,44 +121,8 @@ export default function Screen1({sceneNavigator}) {
             lightReceivingBitMask={5}
             shadowCastingBitMask={4}
           />
-
-          <Viro3DObject
-            materials={['milk']}
-            source={require('../res/milk/milk.obj')}
-            position={[2, -0.5, -2]}
-            scale={[0.01, 0.01, 0.01]}
-            type="OBJ"
-            lightReceivingBitMask={5}
-            shadowCastingBitMask={4}
-            onDrag={() => {}}
-          />
-
-          <Viro3DObject
-            materials={['milk']}
-            source={require('../res/milk/milk.obj')}
-            position={[2.2, 0.1, -1.6]}
-            scale={[0.01, 0.01, 0.01]}
-            type="OBJ"
-            lightReceivingBitMask={5}
-            shadowCastingBitMask={4}
-            onDrag={() => {}}
-          />
-      </ViroNode>
-
-      <ViroText
-          onDrag={() => {}}
-          text={text}
-          scale={[0.5, 0.5, 0.5]}
-          position={[0, 2.5, -4]}
-          style={styles.helloWorldTextStyle}
-        />
-        <ViroBox
-          position={[-1.5, -2, -3]}
-          rotation={[0, 20, 0]}
-          scale={[1, 1, 1]}
-          materials={['vtb']}
-          onDrag={() => {}}
-        />
+          
+      </ViroNode>        
     </ViroARScene>
   );
 }
