@@ -25,6 +25,14 @@ const WelcomeScreen = ({ navigateTo }) => {
 
         <TouchableHighlight
           style={localStyles.buttons}
+          onPress={() => navigateTo(NAVIGATOR_TYPES.arProductInfo)}
+          underlayColor={'#68a0ff'}
+        >
+          <Text style={localStyles.buttonText}>Просмотр продукта</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+          style={localStyles.buttons}
           onPress={() => navigateTo(NAVIGATOR_TYPES.screen2)}
           underlayColor={'#68a0ff'}
         >

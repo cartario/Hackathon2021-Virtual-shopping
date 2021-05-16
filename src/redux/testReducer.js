@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  hello: ''
+  hello: '',
+  currentProductId: '-M_o60EsGM3ftVa4felw'
 }
 
 const slice = createSlice({
