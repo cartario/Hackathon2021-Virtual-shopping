@@ -7,7 +7,8 @@ import {Provider} from 'react-redux'
 import store from './src/redux'
 import {NAVIGATOR_TYPES} from './src/utils'
 
-import {LoginScreen, ToyScene, HelloWorldSceneAR, ProductInfoScreen} from './src/screens'
+import {LoginScreen, ToyScene, HelloWorldSceneAR, ProductInfoScreen} from './src/screens';
+import {VegetablesScene} from './src/scenes'
 
 const WelcomeScreen = ({ navigateTo }) => {
   return (
@@ -20,7 +21,7 @@ const WelcomeScreen = ({ navigateTo }) => {
           onPress={() => navigateTo(NAVIGATOR_TYPES.screen1)}
           underlayColor={'#68a0ff'}
         >
-          <Text style={localStyles.buttonText}>По рецепту</Text>
+          <Text style={localStyles.buttonText}>Свободное посещение</Text>
         </TouchableHighlight>
 
         <TouchableHighlight
@@ -64,7 +65,7 @@ const WelcomeScreen = ({ navigateTo }) => {
 
   switch (navigatorType) {
     case NAVIGATOR_TYPES.screen1:
-      return <ViroARSceneNavigator initialScene={{ scene: HelloWorldSceneAR }} viroAppProps={{navigateTo: _navigateTo}}/>;
+      return <ViroARSceneNavigator initialScene={{ scene: VegetablesScene }} viroAppProps={{navigateTo: _navigateTo}}/>;
     case NAVIGATOR_TYPES.arProductInfo:
       return <ViroARSceneNavigator initialScene={{ scene: ProductInfoScreen}} viroAppProps={{navigateTo: _navigateTo}}/>;
     case NAVIGATOR_TYPES.screen2:
