@@ -17,14 +17,17 @@ import {
   ViroButton,
 } from 'react-viro';
 
+import {useSelector, useDispatch} from 'react-redux';
+import {addToCart} from '../redux/cartReducer'
+
 import useHttp from '../hooks/useHttp';
-import { HelloWorldSceneAR, ProductInfoScreen } from '../screens';
-import {SweetScene} from './';
+
+import {SweetScene, GroceryScene} from './';
 
 import { NAVIGATOR_TYPES, fireBaseAdapter } from '../utils';
-import GroceryScene from './Grocery';
 
 const TitleSection = ({ text }) => {
+
   return (
     <ViroFlexView
       style={styles.titleContainer}
@@ -34,6 +37,7 @@ const TitleSection = ({ text }) => {
       height={1}      
     >
       <ViroText style={styles.prodTitleText} text={text} width={4} height={0.5} />
+      
     </ViroFlexView>
   );
 };
@@ -127,12 +131,24 @@ export default function VegetableScene({ sceneNavigator }) {
 
   const [spinner, setSpinner] = React.useState(true);
 
+  const state = useSelector(({cart})=>cart);
+  const dispatch = useDispatch();
+
   const { request } = useHttp();
+
+  const handleDrag = () => {
+    // sceneNavigator.jump({ scene: SweetScene })
+    const obj = {
+      id: 1,
+      price: 12,
+    };
+    dispatch(addToCart(obj));
+  }
 
   return (
     <ViroARScene>
       <ViroAmbientLight color="#ffffff" />
-      <ViroSpinner visible={spinner} type="Light" position={[0, 0, -2.5]} />
+      <ViroSpinner visible={spinner} type="Light" position={[0, 0, -2.5]} />      
 
       <Viro360Image
         format="RGBA8"
@@ -155,7 +171,7 @@ export default function VegetableScene({ sceneNavigator }) {
         rotation={[0, 20, 0]}
         scale={[1, 1, 1]}
         materials={['vtb']}
-        onDrag={()=>sceneNavigator.jump({ scene: SweetScene })}
+        onDrag={handleDrag}
       />
     </ViroARScene>
   );

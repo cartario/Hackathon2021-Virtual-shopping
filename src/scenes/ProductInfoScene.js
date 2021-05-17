@@ -25,66 +25,69 @@ import { useSelector } from 'react-redux';
 const BASE_URL =
   'https://virtual-shoping-b52fd-default-rtdb.europe-west1.firebasedatabase.app/products';
 
-  const CounterControlPanel = ({handleClickButton}) => {
-    const [count, setCount] = React.useState(1);
+const CounterControlPanel = ({ next }) => {
+  const [count, setCount] = React.useState(1);
 
-    const handlePlus = () => {
-      setCount((prev) => prev + 1);
-    };
-  
-    const handleMinus = () => {
-      if (count > 1) {
-        setCount((prev) => prev - 1);
-      }
-    };
-
-    return (
-      <ViroNode onDrag={() => {}}>
-        <ViroFlexView
-          style={{ backgroundColor: 'rgba(75, 75, 75, 0.62)' }}
-          height={2}
-          width={2}
-          position={[0, -1.5, -2.01]}
-        ></ViroFlexView>
-        <ViroButton
-          source={require('../res/btn//goback/active.png')}
-          onClick={handleClickButton}
-          gazeSource={require('../res/btn//goback/hover.png')}
-          clickSource={require('../res/btn//goback/taped.png')}
-          position={[0, -2, -2]}
-          scale={[1, 1, 1]}
-          height={0.25}
-          width={1.3925}
-        />
-  
-        <ViroButton
-          source={require('../res/btn/plus/active.png')}
-          onClick={handlePlus}
-          gazeSource={require('../res/btn/plus/hover.png')}
-          clickSource={require('../res/btn/plus/taped.png')}
-          position={[-0.5, -1, -2]}
-          scale={[1, 1, 1]}
-          height={0.25}
-          width={0.25}
-          onHover={handlePlus}
-        />
-  
-        <ViroText position={[0.45, -1.25, -2]} text={count.toString()} />
-  
-        <ViroButton
-          source={require('../res/btn/minus/active.png')}
-          onClick={handleMinus}
-          onHover={handleMinus}
-          gazeSource={require('../res/btn/minus/hover.png')}
-          clickSource={require('../res/btn/minus/taped.png')}
-          position={[0.5, -1, -2]}
-          scale={[1, 1, 1]}
-          height={0.25}
-          width={0.25}
-        />
-      </ViroNode>
-    );
+  const handlePlus = () => {
+    setCount((prev) => prev + 1);
   };
+
+  const handleMinus = () => {
+    if (count > 1) {
+      setCount((prev) => prev - 1);
+    }
+  };
+
+  return (
+    <ViroNode
+      // rotation={[-30,0,0]}
+      onDrag={() => {}}
+    >
+      <ViroFlexView
+        style={{ backgroundColor: 'rgba(75, 75, 75, 0.62)' }}
+        height={2}
+        width={2}
+        position={[0, -1.5, -2.01]}
+      ></ViroFlexView>
+
+      <ViroButton
+        source={require('../res/btn/add_to_cart/active.png')}
+        onClick={next}
+        gazeSource={require('../res/btn/add_to_cart/hover.png')}
+        position={[0, -2, -2]}
+        scale={[1, 1, 1]}
+        height={0.25}
+        width={1.3925}
+      />
+
+      <ViroButton
+        source={require('../res/btn/plus/active.png')}
+        onClick={handlePlus}
+        gazeSource={require('../res/btn/plus/hover.png')}
+        clickSource={require('../res/btn/plus/taped.png')}
+        position={[-0.5, -1, -2]}
+        scale={[1, 1, 1]}
+        height={0.25}
+        width={0.25}
+        onHover={handlePlus}
+      />
+
+      <ViroText position={[0.45, -1.25, -2]} text={count.toString()} />
+
+      <ViroButton
+        source={require('../res/btn/minus/active.png')}
+        onClick={handleMinus}
+        onHover={handleMinus}
+        gazeSource={require('../res/btn/minus/hover.png')}
+        clickSource={require('../res/btn/minus/taped.png')}
+        position={[0.5, -1, -2]}
+        scale={[1, 1, 1]}
+        height={0.25}
+        width={0.25}
+      />
+    </ViroNode>
+  );
+};
 
 export default function ProductScene({ sceneNavigator }) {
   const [data, setData] = React.useState(null);
@@ -94,7 +97,6 @@ export default function ProductScene({ sceneNavigator }) {
     data: false,
     model: false,
   });
-  
 
   const { currentProductId } = useSelector(({ test }) => test);
   const PRODUCT_URL = `${BASE_URL}/${currentProductId}.json`;
@@ -129,8 +131,6 @@ export default function ProductScene({ sceneNavigator }) {
     sceneNavigator.viroAppProps.navigateTo('login');
   };
 
-  
-
   const handleBackgroundLoaded = () => {
     setStatus({ ...status, image: true });
   };
@@ -146,8 +146,6 @@ export default function ProductScene({ sceneNavigator }) {
 
   const { description, picture, price, rating, title } = data;
 
-  
-
   return (
     <ViroARScene onTrackingUpdated={_onInitialized}>
       <ViroAmbientLight color="#ffffff" />
@@ -157,10 +155,11 @@ export default function ProductScene({ sceneNavigator }) {
         animation={{ loop: false }}
         source={require('../res/scenes/product-scene.jpeg')}
         onLoadEnd={handleBackgroundLoaded}
+       
       /> */}
       <ViroSpinner visible={!status.image || !status.data} type="Light" position={[0, 0, -2.5]} />
 
-      <CounterControlPanel handleClickButton={handleClickButton}/>
+      <CounterControlPanel next={handleClickButton} />
 
       {/*Статус загрузки*/}
       <ViroFlexView
@@ -190,7 +189,7 @@ export default function ProductScene({ sceneNavigator }) {
       <ViroFlexView
         visible={status.image && status.data}
         style={styles.titleContainer}
-        position={[2, 3.5, -7]}
+        position={[3, 1, -7]}
         rotation={[10, -30, 0]}
         height={2}
         width={4}
@@ -232,7 +231,7 @@ export default function ProductScene({ sceneNavigator }) {
         <Viro3DObject
           materials={['cola']}
           source={require('../res/cola/model.obj')}
-          position={[2.5, -1.65, -2]}
+          position={[1, -0.35, -2]}
           rotation={[0, 90, 0]}
           scale={[0.1, 0.1, 0.1]}
           type="OBJ"
@@ -243,6 +242,7 @@ export default function ProductScene({ sceneNavigator }) {
             setStatus({ ...status, model: true });
             handleBackgroundLoaded();
           }}
+          animation={{ name: 'rotateY', run: true, loop: true }}
         />
       </ViroNode>
     </ViroARScene>
@@ -267,7 +267,7 @@ ViroMaterials.createMaterials({
 ViroAnimations.registerAnimations({
   fadeOut: { properties: { opacity: 0 }, duration: 2000 },
   fadeIn: { properties: { opacity: 1 }, duration: 2000 },
-  scaleAndRotate: { properties: { rotateY: '+=90', positionZ: '-3' }, duration: 1000 },
+  rotateY: { properties: { rotateY: '+=90' }, duration: 1000 },
 });
 
 const styles = StyleSheet.create({

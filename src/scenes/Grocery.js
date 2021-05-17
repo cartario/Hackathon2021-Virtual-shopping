@@ -18,7 +18,7 @@ import {
 } from 'react-viro';
 
 import useHttp from '../hooks/useHttp';
-import { HelloWorldSceneAR, ProductInfoScreen } from '../screens';
+import { HelloWorldSceneAR } from '../screens';
 import {DrinksScene, SweetScene, VegetablesScene} from '../scenes'
 
 import { NAVIGATOR_TYPES, fireBaseAdapter } from '../utils';

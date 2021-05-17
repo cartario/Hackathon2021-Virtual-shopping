@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 import store from './src/redux';
 import { NAVIGATOR_TYPES } from './src/utils';
 
-import { LoginScreen, ProductInfoScreen } from './src/screens';
-import { SweetScene, VegetablesScene, DrinksScene, GroceryScene } from './src/scenes';
+import { LoginScreen } from './src/screens';
+import { SweetScene, VegetablesScene, DrinksScene, GroceryScene, ProductInfoScene} from './src/scenes';
 
 const WelcomeScreen = ({ navigateTo }) => {
   return (
@@ -24,13 +24,13 @@ const WelcomeScreen = ({ navigateTo }) => {
           <Text style={localStyles.buttonText}>Свободное посещение</Text>
         </TouchableHighlight>
 
-        {/* <TouchableHighlight
+        <TouchableHighlight
           style={localStyles.buttons}
           onPress={() => navigateTo(NAVIGATOR_TYPES.arProductInfo)}
           underlayColor={'#68a0ff'}
         >
           <Text style={localStyles.buttonText}>Просмотр продукта</Text>
-        </TouchableHighlight> */}
+        </TouchableHighlight>
 
         {/* <TouchableHighlight
           style={localStyles.buttons}
@@ -95,7 +95,7 @@ function App() {
     case NAVIGATOR_TYPES.arProductInfo:
       return (
         <ViroARSceneNavigator
-          initialScene={{ scene: ProductInfoScreen }}
+          initialScene={{ scene: ProductInfoScene }}
           viroAppProps={{ navigateTo: _navigateTo }}
         />
       );
