@@ -1,6 +1,8 @@
 export const NAVIGATOR_TYPES = {
-  screen1: 'AR',
-  screen2: 'VR',
+  screen1: 'vegetableScene',
+  screen2: 'sweetScene',
+  screen3: 'drinkScene',
+  screen4: 'groceryScene',
   login: 'login',
   arProductInfo: 'arProductInfo'
 };

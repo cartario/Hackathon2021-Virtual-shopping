@@ -19,10 +19,9 @@ import {
 
 import useHttp from '../hooks/useHttp';
 import { HelloWorldSceneAR, ProductInfoScreen } from '../screens';
-import {SweetScene} from './';
+import {DrinksScene, SweetScene, VegetablesScene} from '../scenes'
 
 import { NAVIGATOR_TYPES, fireBaseAdapter } from '../utils';
-import GroceryScene from './Grocery';
 
 const TitleSection = ({ text }) => {
   return (
@@ -31,7 +30,7 @@ const TitleSection = ({ text }) => {
       position={[0, 4, -7.5]}
       rotation={[30, 0, 0]}
       width={4}
-      height={1}      
+      height={1}
     >
       <ViroText style={styles.prodTitleText} text={text} width={4} height={0.5} />
     </ViroFlexView>
@@ -41,9 +40,9 @@ const TitleSection = ({ text }) => {
 const NextSectionLeft = ({ next }) => {
   return (
     <ViroButton
-      source={require('../res/btn/bakaleya/active.png')}
+      source={require('../res/btn/drinks/active-left.png')}
       onClick={next}
-      gazeSource={require('../res/btn/bakaleya/hover.png')}
+      gazeSource={require('../res/btn/drinks/hover-left.png')}
       position={[-5, 4.5, -7]}
       rotation={[40, 20, 0]}
       scale={[1, 1, 1]}
@@ -56,9 +55,9 @@ const NextSectionLeft = ({ next }) => {
 const NextSectionRight = ({ next }) => {
   return (
     <ViroButton
-      source={require('../res/btn/sweet/active.png')}
+      source={require('../res/btn/vegetables/active-right.png')}
       onClick={next}
-      gazeSource={require('../res/btn/sweet/hover.png')}
+      gazeSource={require('../res/btn/vegetables/hover-right.png')}
       position={[5, 4.5, -7]}
       rotation={[40, -20, 0]}
       scale={[1, 1, 1]}
@@ -68,7 +67,7 @@ const NextSectionRight = ({ next }) => {
   );
 };
 
-const Shelve = ({ next }) => {
+const Shelve = () => {
   return (
     <ViroNode position={[-1, -0.5, -0.5]} dragType="FixedToWorld">
       <ViroSpotLight
@@ -122,7 +121,7 @@ const Shelve = ({ next }) => {
   );
 };
 
-export default function VegetableScene({ sceneNavigator }) {
+export default function GroceryScene({ sceneNavigator }) {
   // sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.arProductInfo)
 
   const [spinner, setSpinner] = React.useState(true);
@@ -138,24 +137,24 @@ export default function VegetableScene({ sceneNavigator }) {
         format="RGBA8"
         rotation={[0, 90, 0]}
         animation={{ loop: false }}
-        source={require('../res/scenes/vegetables.jpeg')}
-        onLoadEnd={() => setSpinner(false)}
+        source={require('../res/scenes/grocery.jpeg')}
+        // onLoadEnd={() => setSpinner(false)}
       />
 
-      <TitleSection text={'Овощной отдел'}/>
+      <TitleSection text={'Бакалея'} />
 
-      <NextSectionLeft next={() => sceneNavigator.jump({ scene: GroceryScene })} />
+      <NextSectionLeft next={() => sceneNavigator.jump({ scene: DrinksScene })} />
 
-      <NextSectionRight next={() => sceneNavigator.jump({ scene: SweetScene })} />
+      <NextSectionRight next={() => sceneNavigator.jump({ scene: VegetablesScene })} />
 
       <Shelve next={() => setSpinner(false)} />
 
       <ViroBox
-        position={[-1.5, -2, -3]}
+        position={[-1.5, -1.5, -1]}
         rotation={[0, 20, 0]}
-        scale={[1, 1, 1]}
+        scale={[0.5, 0.5, 0.5]}
         materials={['vtb']}
-        onDrag={()=>sceneNavigator.jump({ scene: SweetScene })}
+        onDrag={() => {}}
       />
     </ViroARScene>
   );
@@ -165,11 +164,11 @@ ViroMaterials.createMaterials({
   vtb: {
     diffuseTexture: require('../res/207.jpeg'),
   },
-  tabasco: {
+  milk: {
     shininess: 2.0,
     lightingModel: 'Blinn',
     cullMode: 'None',
-    diffuseTexture: require('../res/tabasco/texture.jpg'),
+    diffuseTexture: require('../res/milk/texture.png'),
   },
   shelf: {
     shininess: 2.0,

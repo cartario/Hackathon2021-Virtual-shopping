@@ -3,12 +3,12 @@ import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 
 import { ViroARSceneNavigator } from 'react-viro';
 
-import {Provider} from 'react-redux'
-import store from './src/redux'
-import {NAVIGATOR_TYPES} from './src/utils'
+import { Provider } from 'react-redux';
+import store from './src/redux';
+import { NAVIGATOR_TYPES } from './src/utils';
 
-import {LoginScreen, ToyScene, HelloWorldSceneAR, ProductInfoScreen} from './src/screens';
-import {VegetablesScene} from './src/scenes'
+import { LoginScreen, ProductInfoScreen } from './src/screens';
+import { SweetScene, VegetablesScene, DrinksScene, GroceryScene } from './src/scenes';
 
 const WelcomeScreen = ({ navigateTo }) => {
   return (
@@ -24,21 +24,21 @@ const WelcomeScreen = ({ navigateTo }) => {
           <Text style={localStyles.buttonText}>Свободное посещение</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight
+        {/* <TouchableHighlight
           style={localStyles.buttons}
           onPress={() => navigateTo(NAVIGATOR_TYPES.arProductInfo)}
           underlayColor={'#68a0ff'}
         >
           <Text style={localStyles.buttonText}>Просмотр продукта</Text>
-        </TouchableHighlight>
+        </TouchableHighlight> */}
 
-        <TouchableHighlight
+        {/* <TouchableHighlight
           style={localStyles.buttons}
           onPress={() => navigateTo(NAVIGATOR_TYPES.screen2)}
           underlayColor={'#68a0ff'}
         >
           <Text style={localStyles.buttonText}>Свободное посещение</Text>
-        </TouchableHighlight>
+        </TouchableHighlight> */}
 
         <TouchableHighlight
           style={localStyles.buttons}
@@ -52,7 +52,7 @@ const WelcomeScreen = ({ navigateTo }) => {
   );
 };
 
- function App() {
+function App() {
   const [navigatorType, setNavigatorType] = React.useState(null);
 
   const _navigateTo = (navigatorType) => {
@@ -65,13 +65,42 @@ const WelcomeScreen = ({ navigateTo }) => {
 
   switch (navigatorType) {
     case NAVIGATOR_TYPES.screen1:
-      return <ViroARSceneNavigator initialScene={{ scene: VegetablesScene }} viroAppProps={{navigateTo: _navigateTo}}/>;
-    case NAVIGATOR_TYPES.arProductInfo:
-      return <ViroARSceneNavigator initialScene={{ scene: ProductInfoScreen}} viroAppProps={{navigateTo: _navigateTo}}/>;
+      return (
+        <ViroARSceneNavigator
+          initialScene={{ scene: VegetablesScene }}
+          viroAppProps={{ navigateTo: _navigateTo }}
+        />
+      );
     case NAVIGATOR_TYPES.screen2:
-      return <ViroARSceneNavigator initialScene={{ scene: ToyScene }} viroAppProps={{navigateTo: _navigateTo}}/>;
+      return (
+        <ViroARSceneNavigator
+          initialScene={{ scene: SweetScene }}
+          viroAppProps={{ navigateTo: _navigateTo }}
+        />
+      );
+    case NAVIGATOR_TYPES.screen3:
+      return (
+        <ViroARSceneNavigator
+          initialScene={{ scene: DrinksScene }}
+          viroAppProps={{ navigateTo: _navigateTo }}
+        />
+      );
+    case NAVIGATOR_TYPES.screen4:
+      return (
+        <ViroARSceneNavigator
+          initialScene={{ scene: GroceryScene }}
+          viroAppProps={{ navigateTo: _navigateTo }}
+        />
+      );
+    case NAVIGATOR_TYPES.arProductInfo:
+      return (
+        <ViroARSceneNavigator
+          initialScene={{ scene: ProductInfoScreen }}
+          viroAppProps={{ navigateTo: _navigateTo }}
+        />
+      );
     case NAVIGATOR_TYPES.login:
-      return <LoginScreen goBack={_getHome}/>;
+      return <LoginScreen goBack={_getHome} />;
     default:
       return <WelcomeScreen navigateTo={_navigateTo} />;
   }
@@ -82,7 +111,7 @@ export default function ReduxApp() {
     <Provider store={store}>
       <App />
     </Provider>
-  )
+  );
 }
 
 var localStyles = StyleSheet.create({
