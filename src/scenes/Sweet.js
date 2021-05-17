@@ -180,9 +180,9 @@ export default function SweetScene({ sceneNavigator }) {
 
       <ViroFlexView 
         visible={productInfo.visible}
-        position={[productInfo.positionX + 0.2, productInfo.positionY +0.2, productInfo.positionZ ]}
+        position={[productInfo.positionX + 1, productInfo.positionY +0.5, productInfo.positionZ  + 0.5]}
         height={1.5}
-        width={1}
+        width={1.5}
         style={styles.titleContainer}
       >
 
