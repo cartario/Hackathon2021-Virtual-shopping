@@ -126,7 +126,28 @@ export default function SweetScene({ sceneNavigator }) {
 
   const [spinner, setSpinner] = React.useState(true);
 
+  const [productInfo, setProductInfo] = React.useState({
+    positionX: -1.5,
+    positionY: -1,
+    positionZ: -1,
+    visible: true
+  })
+
   const { request } = useHttp();
+
+  const handleDrag = (draggedToPosition) => {
+    setProductInfo({
+      ...productInfo,
+      positionX: draggedToPosition[0],
+      positionY: draggedToPosition[1],
+      positionZ: draggedToPosition[2],
+
+    })
+  }
+
+  const title='title'
+  const price='price'
+  const description='description'
 
   return (
     <ViroARScene>
@@ -154,8 +175,29 @@ export default function SweetScene({ sceneNavigator }) {
         rotation={[0, 20, 0]}
         scale={[0.5, 0.5, 0.5]}
         materials={['vtb']}
-        onDrag={() => {}}
+        onDrag={handleDrag}
       />
+
+      <ViroFlexView 
+        visible={productInfo.visible}
+        position={[productInfo.positionX + 0.2, productInfo.positionY +0.2, productInfo.positionZ ]}
+        height={1.5}
+        width={1}
+        style={styles.titleContainer}
+      >
+
+        <ViroFlexView style={styles.rowContainer}>
+          <ViroText style={styles.prodDescriptionText} text={`Название: ${title}`} />
+        </ViroFlexView>
+        <ViroFlexView style={styles.rowContainer}>
+          <ViroText style={styles.prodDescriptionText} text={`Описание: ${description}`} />
+        </ViroFlexView>
+        <ViroFlexView style={styles.rowContainer}>
+          <ViroText style={styles.prodDescriptionText} text={`Цена: ${price}`} />
+        </ViroFlexView>
+        
+
+      </ViroFlexView>
     </ViroARScene>
   );
 }
@@ -191,5 +233,17 @@ var styles = StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  rowContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  prodDescriptionText: {
+    fontFamily: 'sans-serif-light',
+    fontSize: 20,
+    color: '#222222',
+    textAlignVertical: 'center',
+    textAlign: 'left',
+    flex: 1,
   },
 });
