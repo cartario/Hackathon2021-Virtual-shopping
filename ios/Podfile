@@ -1,0 +1,35 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.3'
+
+target 'VirtualShopping' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for VirtualShopping
+  pod 'ViroReact', :path => '../node_modules/react-viro/ios/'
+  pod 'ViroKit', :path => '../node_modules/react-viro/ios/dist/ViroRenderer/'
+  
+  target 'VirtualShopping-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'VirtualShoppingTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+# target 'VirtualShopping-tvOS' do
+#   # Comment the next line if you don't want to use dynamic frameworks
+#   use_frameworks!
+
+#   # Pods for VirtualShopping-tvOS
+
+#   target 'VirtualShopping-tvOSTests' do
+#     inherit! :search_paths
+#     # Pods for testing
+#   end
+
+# end
