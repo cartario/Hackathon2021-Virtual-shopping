@@ -72,20 +72,23 @@ const NextSectionRight = ({ next }) => {
 
 const products = [
   {
+    name: 'tomato',
     materials: ['tomato'],
     position: [2, 0.8, -2],
   },
   {
+    name: 'cucumber',
     materials: ['cucumber'],
-    position: [2.4, 0.2, -2],
+    position: [2, 0.2, -2],
   },
   {
+    name: 'pepper',
     materials: ['pepper'],
-    position: [2.8, -0.5, -2],
+    position: [2, -0.5, -2],
   },
 ];
 
-const Shelve = ({ next, products }) => {
+const Shelve = ({ handleSpinner, products, handleHoverProduct, hoveredProduct }) => {
   const [loading, setLoading] = React.useState({
     shelve: true,
     objects: false    
@@ -118,7 +121,7 @@ const Shelve = ({ next, products }) => {
         shadowCastingBitMask={4}
         onLoadEnd={()=>{
           setLoading({...loading, shelve: false});
-          next();
+          handleSpinner();
         }}
       />
 
@@ -150,10 +153,11 @@ const Shelve = ({ next, products }) => {
           key={i}
           position={[product.position[0], product.position[1], product.position[2]]}
           rotation={[0, 20, 0]}
-          scale={[0.3, 0.3, 0.3]}
+          scale={hoveredProduct === product.name ? [0.4, 0.4, 0.4] : [0.3, 0.3, 0.3]}
           materials={product.materials}
           onDrag={() => {}}
-          animation={{ name: 'rotateY', run: true, loop: true }}          
+          animation={{ name: 'rotateY', run: true, loop: true }} 
+          onHover={()=>handleHoverProduct(product.name)}         
         />
       ))}
     </ViroNode>
@@ -216,15 +220,17 @@ export default function VegetableScene({ sceneNavigator }) {
   };
 
   const Content = ({onLoad}) => {
+    const [hoveredProduct, setHoveredProduct] = React.useState('info');
+
     return (<>
     <Menu sceneNavigator={sceneNavigator} />
-      <TitleSection text={`Овощной отдел`} />
+      <TitleSection text={`Овощной отдел ${hoveredProduct}`} />
 
       <NextSectionLeft next={() => sceneNavigator.jump({ scene: GroceryScene })} />
 
       <NextSectionRight next={() => sceneNavigator.jump({ scene: SweetScene })} />
 
-      <Shelve next={onLoad} products={products} />
+      <Shelve handleSpinner={onLoad} products={products} handleHoverProduct={setHoveredProduct} hoveredProduct={hoveredProduct}/>
 
       <ViroBox
         position={[-1.5, -2, -3]}
@@ -243,6 +249,7 @@ export default function VegetableScene({ sceneNavigator }) {
         materials={['redItem']}
         onDrag={() => {}}
         onClick={handleMoveCamera}
+        
       />
     </>)
   }
