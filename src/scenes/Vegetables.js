@@ -16,26 +16,26 @@ import {
   Viro360Image,
   ViroButton,
   ViroSphere,
+  ViroCamera,
+  ViroAnimations,
 } from 'react-viro';
 
-import {useSelector, useDispatch} from 'react-redux';
-import {addToCart} from '../redux/cartReducer';
+import { useSelector, useDispatch } from 'react-redux';
+import { addToCart } from '../redux/cartReducer';
 import useHttp from '../hooks/useHttp';
-import {SweetScene, GroceryScene} from './';
-import {Menu} from '../ar-components';
+import { SweetScene, GroceryScene } from './';
+import { Menu } from '../ar-components';
 
 const TitleSection = ({ text }) => {
-
   return (
     <ViroFlexView
       style={styles.titleContainer}
       position={[0, 4, -7.5]}
       rotation={[30, 0, 0]}
       width={4}
-      height={1}      
+      height={1}
     >
       <ViroText style={styles.prodTitleText} text={text} width={4} height={0.5} />
-      
     </ViroFlexView>
   );
 };
@@ -70,7 +70,22 @@ const NextSectionRight = ({ next }) => {
   );
 };
 
-const Shelve = ({ next }) => {
+const products = [
+  {
+    materials: ['tomato'],
+    position: [2, 0.8, -2],
+  },
+  {
+    materials: ['cucumber'],
+    position: [2.4, 0.2, -2],
+  },
+  {
+    materials: ['pepper'],
+    position: [2.8, -0.5, -2],
+  },
+];
+
+const Shelve = ({ next, products }) => {
   return (
     <ViroNode position={[-1, -0.5, -0.5]} dragType="FixedToWorld">
       <ViroSpotLight
@@ -120,35 +135,83 @@ const Shelve = ({ next }) => {
           shadowCastingBitMask={4}
           onDrag={() => {}}
         /> */}
+
+      {products.map((product, i) => (
+        <ViroBox
+          key={i}
+          position={[product.position[0], product.position[1], product.position[2]]}
+          rotation={[0, 20, 0]}
+          scale={[0.3, 0.3, 0.3]}
+          materials={product.materials}
+          onDrag={() => {}}
+          animation={{ name: 'rotateY', run: true, loop: true }}
+        />
+      ))}
     </ViroNode>
   );
 };
-
-
 
 export default function VegetableScene({ sceneNavigator }) {
   // sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.arProductInfo)
 
   const [spinner, setSpinner] = React.useState(true);
 
-  const state = useSelector(({cart})=>cart);
+  const [camera, setCamera] = React.useState({
+    active: false,
+    position: [0, 0, 0],
+    rotation: [0, 0, 0],
+  });
+
+  const state = useSelector(({ cart }) => cart);
   const dispatch = useDispatch();
 
   const { request } = useHttp();
 
   const handleDrag = () => {
-    // sceneNavigator.jump({ scene: SweetScene })
     const obj = {
       id: 1,
       price: 12,
     };
-    dispatch(addToCart(obj));
-  }  
+    dispatch(addToCart(obj));   
+  };
+
+  const handleMoveCamera = () => {
+    if(!camera.active){
+      handleMoveToShelve(); //изчезает возможность перемещаться      
+    }
+    else {
+      handleResetCamera();
+    }
+  }
+
+  const handleMoveToShelve = () => {
+    setCamera({
+      ...camera,
+      position: [-1, 0, -2],
+      rotation: [0, -70, 0],
+      active: true,
+    });
+  };
+
+  const handleResetCamera = () => {
+    setCamera((prev) => ({
+      ...camera,
+      position: [0, 0, 0],
+      rotation: [0, 0, 0],
+      active: !prev,
+    }));
+  };
 
   return (
     <ViroARScene>
       <ViroAmbientLight color="#ffffff" />
-      <ViroSpinner visible={spinner} type="Light" position={[0, 0, -2.5]} />      
+      <ViroSpinner visible={spinner} type="Light" position={[0, 0, -2.5]} />
+
+      <ViroCamera
+        position={[camera.position[0], camera.position[1], camera.position[2]]}
+        rotation={[camera.rotation[0], camera.rotation[1], camera.rotation[2]]}
+        active={camera.active}
+      />
 
       <Viro360Image
         format="RGBA8"
@@ -158,25 +221,34 @@ export default function VegetableScene({ sceneNavigator }) {
         onLoadEnd={() => setSpinner(false)}
       />
 
-      <Menu sceneNavigator={sceneNavigator}/>
+      <Menu sceneNavigator={sceneNavigator} />
 
-      <TitleSection text={'Овощной отдел'}/>
+      <TitleSection text={`Овощной отдел ${camera.active ? 'active' : 'disactive'}`} />
 
       <NextSectionLeft next={() => sceneNavigator.jump({ scene: GroceryScene })} />
 
       <NextSectionRight next={() => sceneNavigator.jump({ scene: SweetScene })} />
 
-      <Shelve next={() => setSpinner(false)} />
+      <Shelve next={() => setSpinner(false)} products={products} />
 
       <ViroBox
         position={[-1.5, -2, -3]}
         rotation={[0, 20, 0]}
         scale={[1, 1, 1]}
         materials={['vtb']}
-        onDrag={handleDrag}
+        onDrag={() => {}}
+        onClick={()=>{}}
       />
 
-      
+      {/* подойти к стеллажу*/}
+      <ViroBox
+        position={[-1.5, -2, 3]}
+        rotation={[0, 20, 0]}
+        scale={[1, 1, 1]}
+        materials={['redItem']}
+        onDrag={() => {}}
+        onClick={handleMoveCamera}
+      />
     </ViroARScene>
   );
 }
@@ -184,6 +256,15 @@ export default function VegetableScene({ sceneNavigator }) {
 ViroMaterials.createMaterials({
   vtb: {
     diffuseTexture: require('../res/207.jpeg'),
+  },
+  tomato: {
+    diffuseTexture: require('../res/boxes/tomato.png'),
+  },
+  cucumber: {
+    diffuseTexture: require('../res/boxes/cucumber.jpeg'),
+  },
+  pepper: {
+    diffuseTexture: require('../res/boxes/pepper.jpeg'),
   },
   tabasco: {
     shininess: 2.0,
@@ -196,6 +277,11 @@ ViroMaterials.createMaterials({
     lightingModel: 'Blinn',
     cullMode: 'None',
     diffuseTexture: require('../res/shelf/texture.jpg'),
+  },
+  redItem: {
+    diffuseColor: 'red',
+    lightingModel: 'Lambert',
+    shininess: 2.0,
   },
 });
 
@@ -213,4 +299,8 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
+});
+
+ViroAnimations.registerAnimations({
+  rotateY: { properties: { rotateY: '+=90' }, duration: 1000 },
 });
