@@ -7,6 +7,13 @@ export const NAVIGATOR_TYPES = {
   arProductInfo: 'arProductInfo'
 };
 
+export const JUMP_TYPES = {
+  drinks: 'drinks',
+  orders: 'ordersScene',
+  exit: 'exit',
+  info: 'infoScene',
+}
+
 export const fireBaseAdapter = (response) => {
   if (!response) {
     return;

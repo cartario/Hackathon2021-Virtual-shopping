@@ -21,6 +21,7 @@ import {
 
 import useHttp from '../hooks/useHttp';
 import { useSelector } from 'react-redux';
+import {Menu} from '../ar-components';
 
 const BASE_URL =
   'https://virtual-shoping-b52fd-default-rtdb.europe-west1.firebasedatabase.app/products';
@@ -159,7 +160,9 @@ export default function ProductScene({ sceneNavigator }) {
       /> */}
       <ViroSpinner visible={!status.image || !status.data} type="Light" position={[0, 0, -2.5]} />
 
+      <Menu sceneNavigator={sceneNavigator}/>
       <CounterControlPanel next={handleClickButton} />
+      
 
       {/*Статус загрузки*/}
       <ViroFlexView

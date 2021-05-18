@@ -15,16 +15,14 @@ import {
   ViroFlexView,
   Viro360Image,
   ViroButton,
+  ViroSphere,
 } from 'react-viro';
 
 import {useSelector, useDispatch} from 'react-redux';
-import {addToCart} from '../redux/cartReducer'
-
+import {addToCart} from '../redux/cartReducer';
 import useHttp from '../hooks/useHttp';
-
 import {SweetScene, GroceryScene} from './';
-
-import { NAVIGATOR_TYPES, fireBaseAdapter } from '../utils';
+import {Menu} from '../ar-components';
 
 const TitleSection = ({ text }) => {
 
@@ -126,6 +124,8 @@ const Shelve = ({ next }) => {
   );
 };
 
+
+
 export default function VegetableScene({ sceneNavigator }) {
   // sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.arProductInfo)
 
@@ -143,7 +143,7 @@ export default function VegetableScene({ sceneNavigator }) {
       price: 12,
     };
     dispatch(addToCart(obj));
-  }
+  }  
 
   return (
     <ViroARScene>
@@ -157,6 +157,8 @@ export default function VegetableScene({ sceneNavigator }) {
         source={require('../res/scenes/vegetables.jpeg')}
         onLoadEnd={() => setSpinner(false)}
       />
+
+      <Menu sceneNavigator={sceneNavigator}/>
 
       <TitleSection text={'Овощной отдел'}/>
 
@@ -173,6 +175,8 @@ export default function VegetableScene({ sceneNavigator }) {
         materials={['vtb']}
         onDrag={handleDrag}
       />
+
+      
     </ViroARScene>
   );
 }

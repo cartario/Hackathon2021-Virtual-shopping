@@ -18,10 +18,8 @@ import {
 } from 'react-viro';
 
 import useHttp from '../hooks/useHttp';
-import { HelloWorldSceneAR } from '../screens';
-import {DrinksScene, VegetablesScene} from '../scenes'
-
-import { NAVIGATOR_TYPES, fireBaseAdapter } from '../utils';
+import {DrinksScene, VegetablesScene} from '../scenes';
+import {Menu} from '../ar-components';
 
 const TitleSection = ({ text }) => {
   return (
@@ -163,6 +161,8 @@ export default function SweetScene({ sceneNavigator }) {
       />
 
       <TitleSection text={'Кондитерский отдел'} />
+
+      <Menu sceneNavigator={sceneNavigator}/>
 
       <NextSectionLeft next={() => sceneNavigator.jump({ scene: VegetablesScene })} />
 
