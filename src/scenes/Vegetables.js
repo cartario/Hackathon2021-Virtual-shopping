@@ -86,6 +86,11 @@ const products = [
 ];
 
 const Shelve = ({ next, products }) => {
+  const [loading, setLoading] = React.useState({
+    shelve: true,
+    objects: false    
+  })  
+
   return (
     <ViroNode position={[-1, -0.5, -0.5]} dragType="FixedToWorld">
       <ViroSpotLight
@@ -111,6 +116,10 @@ const Shelve = ({ next, products }) => {
         type="OBJ"
         lightReceivingBitMask={5}
         shadowCastingBitMask={4}
+        onLoadEnd={()=>{
+          setLoading({...loading, shelve: false});
+          next();
+        }}
       />
 
       {/* <Viro3DObject
@@ -123,9 +132,9 @@ const Shelve = ({ next, products }) => {
         lightReceivingBitMask={5}
         shadowCastingBitMask={4}
         onDrag={() => {}}
-      /> */}
+      />
 
-      {/* <Viro3DObject
+      <Viro3DObject
           materials={['milk']}
           source={require('../res/milk/milk.obj')}
           position={[2.2, 0.1, -1.6]}
@@ -136,7 +145,7 @@ const Shelve = ({ next, products }) => {
           onDrag={() => {}}
         /> */}
 
-      {products.map((product, i) => (
+      {!loading.shelve && products.map((product, i) => (
         <ViroBox
           key={i}
           position={[product.position[0], product.position[1], product.position[2]]}
@@ -144,7 +153,7 @@ const Shelve = ({ next, products }) => {
           scale={[0.3, 0.3, 0.3]}
           materials={product.materials}
           onDrag={() => {}}
-          animation={{ name: 'rotateY', run: true, loop: true }}
+          animation={{ name: 'rotateY', run: true, loop: true }}          
         />
       ))}
     </ViroNode>
@@ -155,6 +164,10 @@ export default function VegetableScene({ sceneNavigator }) {
   // sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.arProductInfo)
 
   const [spinner, setSpinner] = React.useState(true);
+
+  const [loading, setLoading] = React.useState({
+    image360: true,
+  })
 
   const [camera, setCamera] = React.useState({
     active: false,
@@ -202,34 +215,16 @@ export default function VegetableScene({ sceneNavigator }) {
     }));
   };
 
-  return (
-    <ViroARScene>
-      <ViroAmbientLight color="#ffffff" />
-      <ViroSpinner visible={spinner} type="Light" position={[0, 0, -2.5]} />
-
-      <ViroCamera
-        position={[camera.position[0], camera.position[1], camera.position[2]]}
-        rotation={[camera.rotation[0], camera.rotation[1], camera.rotation[2]]}
-        active={camera.active}
-      />
-
-      <Viro360Image
-        format="RGBA8"
-        rotation={[0, 90, 0]}
-        animation={{ loop: false }}
-        source={require('../res/scenes/vegetables.jpeg')}
-        onLoadEnd={() => setSpinner(false)}
-      />
-
-      <Menu sceneNavigator={sceneNavigator} />
-
-      <TitleSection text={`Овощной отдел ${camera.active ? 'active' : 'disactive'}`} />
+  const Content = ({onLoad}) => {
+    return (<>
+    <Menu sceneNavigator={sceneNavigator} />
+      <TitleSection text={`Овощной отдел`} />
 
       <NextSectionLeft next={() => sceneNavigator.jump({ scene: GroceryScene })} />
 
       <NextSectionRight next={() => sceneNavigator.jump({ scene: SweetScene })} />
 
-      <Shelve next={() => setSpinner(false)} products={products} />
+      <Shelve next={onLoad} products={products} />
 
       <ViroBox
         position={[-1.5, -2, -3]}
@@ -249,6 +244,32 @@ export default function VegetableScene({ sceneNavigator }) {
         onDrag={() => {}}
         onClick={handleMoveCamera}
       />
+    </>)
+  }
+
+  return (
+    <ViroARScene>
+      <ViroAmbientLight color="#ffffff" />
+      <ViroSpinner visible={spinner} type="Light" position={[0, 0, -2.5]} />
+
+      <ViroCamera
+        position={[camera.position[0], camera.position[1], camera.position[2]]}
+        rotation={[camera.rotation[0], camera.rotation[1], camera.rotation[2]]}
+        active={camera.active}
+      />
+
+      <Viro360Image
+        format="RGBA8"
+        rotation={[0, 90, 0]}
+        animation={{ loop: false }}
+        source={require('../res/scenes/vegetables.jpeg')}
+        onLoadEnd={() => setLoading({...loading, image360: false})}
+      />
+
+      {loading.image360 ? null : <Content onLoad={()=>setSpinner(false)}/>}
+
+
+
     </ViroARScene>
   );
 }
