@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        fontFamily: 'Roboto',
+        // fontFamily: 'Roboto',
         fontSize: 24,
         color: '#0A5CBF',
         marginLeft: 10
