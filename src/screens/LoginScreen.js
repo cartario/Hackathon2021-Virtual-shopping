@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
-import Logo from '../assets/img/logo.png'
+import Logo from '../assets/img/logo.png';
+import {NAVIGATOR_TYPES} from '../utils'
 
 function LoginScreen(props) {
-  const { goBack } = props;
+  const { navigateTo } = props;
   const {container, textInput, loginButton} = styles;
 
   const [email, setEmail] = React.useState('');
@@ -16,6 +17,10 @@ function LoginScreen(props) {
 
   const onPhoneChange = (value) => {
     setPhone(value)
+  }
+
+  const handleLoginButton = () => {
+    navigateTo(NAVIGATOR_TYPES.menu)
   }
 
   return (
@@ -38,7 +43,9 @@ function LoginScreen(props) {
           onChangeText={onPhoneChange}
         />
       </View>
-      <TouchableOpacity style={loginButton}>
+      <TouchableOpacity style={loginButton}
+      onPress={handleLoginButton}
+      >
         <Text style={{ color: 'white', fontSize: 18}}>Далее</Text>
       </TouchableOpacity>
     </View>

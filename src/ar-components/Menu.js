@@ -9,7 +9,7 @@ const buttons = [
     hover: require('../res/btn/menu/orders-hover.png'),
     position: [-3, 1, -0.5],
     rotation: [0,95,0],
-    jumpTo: JUMP_TYPES.drinks
+    jumpTo: JUMP_TYPES.cart
   },
   {
     active: require('../res/btn/menu/info.png'),
@@ -35,6 +35,8 @@ export default function Menu({ sceneNavigator}) {
         return sceneNavigator.jump({ scene:  DrinksScene})
       case JUMP_TYPES.exit:
         return sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.login)
+      case JUMP_TYPES.cart:
+        return sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.cart)
     }    
   }
 

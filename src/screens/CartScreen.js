@@ -4,11 +4,12 @@ import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView,
 import Arrowdown from '../assets/img/arrowdown.png'
 
 import {BackButton, TrashButton, CartItem} from '../components'
+import {NAVIGATOR_TYPES} from '../utils'
 
 const totalPrice = 140
 
 function CartScreen(props) {
-  const { goBack } = props;
+  const { navigateTo } = props;
   const {container, header, bottomButton, bottomPanel} = styles;
 
   const [email, setEmail] = React.useState('');
@@ -23,11 +24,11 @@ function CartScreen(props) {
   return (
     <View style={container}>
         <View style={header}> 
-            <BackButton text={'Корзина'}/>
+            <BackButton text={'Корзина'} navigateTo={navigateTo}/>
             <TrashButton/>
         </View>
         <FlatList 
-            data={[{},{},{},{},{},{},{}]}
+            data={[{id: '1'},{id: '2'},{id: '3'},{id: '4'},{id: '5'},{id: '6'},{id: '7'}]}
             renderItem={({ item }) => (
                 <CartItem/>
             )}

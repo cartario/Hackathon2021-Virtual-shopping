@@ -12,7 +12,7 @@ import { LoginScreen, WelcomeScreen, MenuScreen, CartScreen } from './src/screen
 import { SweetScene, VegetablesScene, DrinksScene, GroceryScene, ProductInfoScene} from './src/scenes';
 
 function App() {
-  const [navigatorType, setNavigatorType] = React.useState(NAVIGATOR_TYPES.cart);
+  const [navigatorType, setNavigatorType] = React.useState(NAVIGATOR_TYPES.login);
 
   const _navigateTo = (navigatorType) => {
     setNavigatorType(navigatorType);
@@ -60,11 +60,11 @@ function App() {
           />
         );
       case NAVIGATOR_TYPES.login:
-        return <LoginScreen goBack={_getHome} />;
+        return <LoginScreen navigateTo={_navigateTo}/>;
       case NAVIGATOR_TYPES.menu:
-          return <MenuScreen/>
+          return <MenuScreen navigateTo={_navigateTo}/>
       case NAVIGATOR_TYPES.cart:
-          return <CartScreen/>
+          return <CartScreen navigateTo={_navigateTo}/>
       default:
         return <WelcomeScreen navigateTo={_navigateTo} />;
     }

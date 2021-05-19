@@ -14,6 +14,7 @@ export const JUMP_TYPES = {
   orders: 'ordersScene',
   exit: 'exit',
   info: 'infoScene',
+  cart: 'cart'  
 }
 
 export const fireBaseAdapter = (response) => {

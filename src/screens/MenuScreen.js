@@ -4,9 +4,10 @@ import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView 
 import Avatar from '../assets/img/avatar.png'
 
 import {BackButton, CartButton} from '../components'
+import {NAVIGATOR_TYPES} from '../utils'
 
 function MenuScreen(props) {
-  const { goBack } = props;
+  const { navigateTo } = props;
   const {container, header, loginButton, changeUserButton} = styles;
 
   const [email, setEmail] = React.useState('');
@@ -15,14 +16,22 @@ function MenuScreen(props) {
     setEmail(value)
   }
 
+  const handleStart = () => {
+      navigateTo(NAVIGATOR_TYPES.screen1)
+  }
+
+  const handleMoveToLogin = () => {
+    navigateTo(NAVIGATOR_TYPES.login)
+  }
+
   // const {hello} = useSelector(({test})=>test);
   // const dispatch = useDispatch();  
 
   return (
     <View style={container}>
         <View style={header}> 
-            <BackButton text={'Меню'}/>
-            <CartButton/>
+            <BackButton navigateTo={navigateTo} text={'Меню'}/>
+            <CartButton navigateTo={navigateTo}/>
         </View>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems: 'center', paddingTop: 30}}>
             <View style={{width: 150, height: 150, borderRadius: 75, overflow: 'hidden'}}>
@@ -30,7 +39,9 @@ function MenuScreen(props) {
             </View>
             <Text style={{fontSize: 24, color: '#616161', marginTop: 10}}>Вылерия</Text>
             <Text style={{fontSize: 18, fontWeight: '300', color: '#616161', marginTop: 10}}>+7 (900) 852-32-85</Text>
-            <TouchableOpacity style={changeUserButton}>
+            <TouchableOpacity style={changeUserButton}
+            onPress={handleMoveToLogin}
+            >
                 <Text style={{ color: '#FF0000', fontSize: 11, padding: 30}}>Сменить пользователя</Text>
             </TouchableOpacity>
             <View style={{width: '100%', borderBottomWidth: 0.5, borderBottomColor: 'rgba(0, 0, 0, 0.15)'}}/>
@@ -42,7 +53,9 @@ function MenuScreen(props) {
             </View>
         </ScrollView>
 
-        <TouchableOpacity style={loginButton}>
+        <TouchableOpacity style={loginButton}
+        onPress={handleStart}
+        >
             <Text style={{ color: 'white', fontSize: 18}}>Начать покупки</Text>
         </TouchableOpacity>
     </View>
