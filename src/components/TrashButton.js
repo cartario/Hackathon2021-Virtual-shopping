@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
-import Logo2 from '../assets/img/logo2.png'
+import Trash from '../assets/img/trash.png'
 
-const BackButton = () => {
+const TrashButton = () => {
     return (
         <TouchableOpacity>
-            <Image style={{width: 42, height: 30}} source={Logo2}/>
+            <Image style={{width: 25, height: 28}} source={Trash}/>
         </TouchableOpacity>
     )
 }
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BackButton
+export default TrashButton

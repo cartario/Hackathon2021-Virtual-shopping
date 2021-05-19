@@ -10,7 +10,7 @@ const BackButton = (props) => {
 
     return (
         <TouchableOpacity style={container}>
-            <Image source={Back}/>
+            <Image style={{width: 20, height: 11}} source={Back}/>
             <Text style={title}>{text}</Text>
         </TouchableOpacity>
     )

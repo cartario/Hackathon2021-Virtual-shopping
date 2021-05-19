@@ -5,6 +5,7 @@ export const NAVIGATOR_TYPES = {
   screen4: 'groceryScene',
   login: 'login',
   menu: 'menu',
+  cart: 'cart',
   arProductInfo: 'arProductInfo'
 };
 
