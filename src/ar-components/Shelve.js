@@ -16,9 +16,12 @@ import {
 
 import {useDispatch} from 'react-redux';
 
-import {addToCart} from '../redux/cartReducer'
+import {addToCart} from '../redux/cartReducer';
+import {setCurrentProductId} from '../redux/testReducer'
 
-export default function Shelve({ handleSpinner, products }) {
+import {ProductInfoScene} from '../scenes'
+
+export default function Shelve({ handleSpinner, products , sceneNavigator}) {
   const [loading, setLoading] = React.useState({
     shelve: true,
     objects: false,
@@ -34,6 +37,12 @@ export default function Shelve({ handleSpinner, products }) {
       price: price
     }
     dispatch(addToCart(obj))
+  }
+
+  const handleProductInfo = () => {
+    dispatch(setCurrentProductId('-M_o6FqwfkgbdHPyL_My'))
+    sceneNavigator.jump({ scene:  ProductInfoScene});
+    
   }
 
   return (
@@ -138,10 +147,19 @@ export default function Shelve({ handleSpinner, products }) {
 
             </ViroFlexView>
             <ViroButton
-              source={require('../res/btn/add_to_cart/2-active.png')}
+              source={require('../res/btn/add_to_cart/3-active.png')}
               onClick={() => handleAddToCart(product.name, product.price)}
-              gazeSource={require('../res/btn/add_to_cart/2-hover.png')}
+              gazeSource={require('../res/btn/add_to_cart/3-hover.png')}
               position={[product.position[0] + 0.2, product.position[1] - 0.31, product.position[2] + 1.01]}
+              rotation={[0, -60, 0]}
+              height={0.25}
+              width={1.3925}
+            />
+             <ViroButton
+              source={require('../res/btn/watch/active.png')}
+              onClick={handleProductInfo}
+              gazeSource={require('../res/btn/watch/hover.png')}
+              position={[product.position[0] + 0.2, product.position[1] - 0.61, product.position[2] + 1.01]}
               rotation={[0, -60, 0]}
               height={0.25}
               width={1.3925}

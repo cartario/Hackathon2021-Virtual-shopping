@@ -17,11 +17,12 @@ import {
   ViroButton,
   ViroCamera,
   Viro360Image,
+  ViroBox
 } from 'react-viro';
 
 import useHttp from '../hooks/useHttp';
 import { useSelector } from 'react-redux';
-import {Menu} from '../ar-components';
+import { Menu } from '../ar-components';
 
 const BASE_URL =
   'https://virtual-shoping-b52fd-default-rtdb.europe-west1.firebasedatabase.app/products';
@@ -116,17 +117,8 @@ export default function ProductScene({ sceneNavigator }) {
         });
       }
     };
-
     fetchData();
   }, []);
-
-  const _onInitialized = (state, reason) => {
-    if (state == ViroConstants.TRACKING_NORMAL) {
-      // setText('ХАКАТОН ВТБ');
-    } else if (state == ViroConstants.TRACKING_NONE) {
-      // Handle loss of tracking
-    }
-  };
 
   const handleClickButton = () => {
     sceneNavigator.viroAppProps.navigateTo('login');
@@ -138,34 +130,30 @@ export default function ProductScene({ sceneNavigator }) {
 
   if (!data) {
     return (
-      <ViroARScene onTrackingUpdated={_onInitialized}>
+      <ViroARScene>
         <ViroAmbientLight color="#ffffff" />
         <ViroSpinner visible type="Light" position={[0, 0, -2.5]} />
+        <ViroText
+          style={styles.prodTitleText}
+          position={[0, 1 - 2.5]}
+          text={'Loading...'}
+          width={4}
+          height={0.5}
+        />
       </ViroARScene>
     );
   }
 
   const { description, picture, price, rating, title } = data;
 
-  return (
-    <ViroARScene onTrackingUpdated={_onInitialized}>
-      <ViroAmbientLight color="#ffffff" />
-      {/* <Viro360Image
-        format="RGBA8"
-        rotation={[0, 80, 0]}
-        animation={{ loop: false }}
-        source={require('../res/scenes/product-scene.jpeg')}
-        onLoadEnd={handleBackgroundLoaded}
-       
-      /> */}
-      <ViroSpinner visible={!status.image || !status.data} type="Light" position={[0, 0, -2.5]} />
+  const Content = () => {
+    return (
+      <>
+        <Menu sceneNavigator={sceneNavigator} />
+        {/* <CounterControlPanel next={handleClickButton} /> */}
 
-      <Menu sceneNavigator={sceneNavigator}/>
-      <CounterControlPanel next={handleClickButton} />
-      
-
-      {/*Статус загрузки*/}
-      <ViroFlexView
+        {/*Статус загрузки*/}
+        {/* <ViroFlexView
         visible={!status.image || !status.data}
         style={styles.titleContainer}
         position={[0, 3.5, -7]}
@@ -186,84 +174,114 @@ export default function ProductScene({ sceneNavigator }) {
             text={status.data ? 'Данные загружены' : 'Загрузка данных'}
           />
         </ViroFlexView>
-      </ViroFlexView>
+      </ViroFlexView> */}
 
-      {/*Плашка с информацией*/}
-      <ViroFlexView
-        visible={status.image && status.data}
-        style={styles.titleContainer}
-        position={[3, 1, -7]}
-        rotation={[10, -30, 0]}
-        height={2}
-        width={4}
-      >
-        <ViroText style={styles.prodTitleText} text={'О продукте:'} width={4} height={0.5} />
-        <ViroFlexView style={styles.rowContainer}>
-          <ViroText style={styles.prodDescriptionText} text={`Название: ${title}`} />
-        </ViroFlexView>
-        <ViroFlexView style={styles.rowContainer}>
-          <ViroText style={styles.prodDescriptionText} text={`Описание: ${description}`} />
-        </ViroFlexView>
-        <ViroFlexView style={styles.rowContainer}>
-          <ViroText style={styles.prodDescriptionText} text={`Цена: ${price}`} />
-        </ViroFlexView>
-        <ViroFlexView style={styles.rowContainer}>
-          <ViroText style={styles.prodDescriptionText} text={`Рейтинг: ${rating}`} />
-        </ViroFlexView>
+        {/*Плашка с информацией*/}
+        <ViroNode
+        visible
+        >
+          <ViroFlexView            
+            style={styles.titleContainer}
+            position={[3, 1, -7]}
+            rotation={[10, -30, 0]}
+            height={2}
+            width={4}
+          >
+            <ViroText style={styles.prodTitleText} text={'О продукте:'} width={4} height={0.5} />
+            <ViroFlexView style={styles.rowContainer}>
+              <ViroText style={styles.prodDescriptionText} text={`Название: ${title}`} />
+            </ViroFlexView>
+            <ViroFlexView style={styles.rowContainer}>
+              <ViroText style={styles.prodDescriptionText} text={`Описание: ${description}`} />
+            </ViroFlexView>
+            <ViroFlexView style={styles.rowContainer}>
+              <ViroText style={styles.prodDescriptionText} text={`Цена: ${price}`} />
+            </ViroFlexView>
+            <ViroFlexView style={styles.rowContainer}>
+              <ViroText style={styles.prodDescriptionText} text={`Рейтинг: ${rating}`} />
+            </ViroFlexView>   
+          </ViroFlexView>
+        </ViroNode>
 
-        {/* <ViroFlexView style={styles.rowContainer}>
-          <ViroText style={styles.prodDescriptionText} text={status.model ? 'Модель загружена' : 'Загрузка модели'} />
-        </ViroFlexView> */}
-      </ViroFlexView>
+        <ViroNode position={[-1, 0, -0.5]} dragType="FixedToWorld">
+          <ViroSpotLight
+            innerAngle={5}
+            outerAngle={45}
+            direction={[0, -1, -0.2]}
+            position={[0, 3, 0]}
+            color="#ffffff"
+            castsShadow={true}
+            influenceBitMask={4}
+            shadowMapSize={2048}
+            shadowNearZ={2}
+            shadowFarZ={5}
+            shadowOpacity={0.7}
+          />
 
-      <ViroNode position={[-1, 0, -0.5]} dragType="FixedToWorld">
-        <ViroSpotLight
-          innerAngle={5}
-          outerAngle={45}
-          direction={[0, -1, -0.2]}
-          position={[0, 3, 0]}
-          color="#ffffff"
-          castsShadow={true}
-          influenceBitMask={4}
-          shadowMapSize={2048}
-          shadowNearZ={2}
-          shadowFarZ={5}
-          shadowOpacity={0.7}
-        />
+          {/* <Viro3DObject
+            materials={['milk']}
+            source={require('../res/milk/milk.obj')}
+            position={[1, -0.35, -2]}
+            rotation={[0, 90, 0]}
+            scale={[0.1, 0.1, 0.1]}
+            type="OBJ"
+            lightReceivingBitMask={5}
+            shadowCastingBitMask={4}
+            onDrag={() => {}}
+            onLoadEnd={() => setStatus({ ...status, model: true })}
+            animation={{ name: 'rotateY', run: true, loop: true }}
+          /> */}
 
-        <Viro3DObject
-          materials={['cola']}
-          source={require('../res/cola/model.obj')}
-          position={[1, -0.35, -2]}
-          rotation={[0, 90, 0]}
-          scale={[0.1, 0.1, 0.1]}
-          type="OBJ"
-          lightReceivingBitMask={5}
-          shadowCastingBitMask={4}
-          onDrag={() => {}}
-          onLoadEnd={() => {
-            setStatus({ ...status, model: true });
-            handleBackgroundLoaded();
-          }}
-          animation={{ name: 'rotateY', run: true, loop: true }}
-        />
-      </ViroNode>
+          <ViroBox            
+            position={[1, -0.35, -2]}
+            rotation={[0, 20, 0]}
+            scale={[0.3, 0.3, 0.3]}
+            materials={['tomato']}
+            onDrag={() => {}}
+            animation={{ name: 'rotateY', run: true, loop: true }}            
+          />
+        </ViroNode>
+      </>
+    );
+  };
+
+  return (
+    <ViroARScene>
+      <ViroAmbientLight color="#ffffff" />
+
+      <Viro360Image
+        format="RGBA8"
+        rotation={[0, 80, 0]}
+        animation={{ loop: false }}
+        // source={require('../res/scenes/product-scene.jpeg')}
+        source={require('../res/scenes/vegetables.jpeg')}
+        onLoadEnd={handleBackgroundLoaded}
+      />
+
+      <ViroSpinner visible={!status.image} type="Light" position={[0, 0, -2.5]} />
+
+      {status.image ? <Content /> : null}
+
+      <Content />
     </ViroARScene>
   );
 }
 
 ViroMaterials.createMaterials({
-  tabasco: {
-    shininess: 2.0,
-    lightingModel: 'Blinn',
-    cullMode: 'None',
-    diffuseTexture: require('../res/tabasco/texture.jpg'),
+  tomato: {
+    diffuseTexture: require('../res/boxes/tomato.png'),
   },
   cola: {
     shininess: 2.0,
     lightingModel: 'Blinn',
     cullMode: 'None',
     diffuseTexture: require('../res/cola/texture.png'),
+  },
+  milk: {
+    shininess: 2.0,
+    lightingModel: 'Blinn',
+    cullMode: 'None',
+    diffuseTexture: require('../res/milk/texture.png'),
   },
 });
 

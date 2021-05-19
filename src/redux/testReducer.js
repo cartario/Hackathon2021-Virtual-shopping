@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   hello: '',
-  currentProductId: '-M_o60EsGM3ftVa4felw'
+  currentProductId: ''
 }
 
 const slice = createSlice({
@@ -11,10 +11,13 @@ const slice = createSlice({
   reducers: {
     setHello: (state, action)=>{
       state.hello = action.payload
+    },
+    setCurrentProductId: (state, action)=>{
+      state.currentProductId = action.payload
     }
   }
 });
 
-export const {setHello} = slice.actions;
+export const {setHello, setCurrentProductId} = slice.actions;
 
 export default slice.reducer;
