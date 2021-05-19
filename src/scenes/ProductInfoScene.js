@@ -150,14 +150,14 @@ export default function ProductScene({ sceneNavigator }) {
   return (
     <ViroARScene onTrackingUpdated={_onInitialized}>
       <ViroAmbientLight color="#ffffff" />
-      {/* <Viro360Image
+      <Viro360Image
         format="RGBA8"
         rotation={[0, 80, 0]}
         animation={{ loop: false }}
-        source={require('../res/scenes/product-scene.jpeg')}
+        source={require('../res/scenes/product-scene-3.jpg')}
         onLoadEnd={handleBackgroundLoaded}
        
-      /> */}
+      />
       <ViroSpinner visible={!status.image || !status.data} type="Light" position={[0, 0, -2.5]} />
 
       <Menu sceneNavigator={sceneNavigator}/>

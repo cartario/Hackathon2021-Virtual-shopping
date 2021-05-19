@@ -168,7 +168,8 @@ export default function VegetableScene({ sceneNavigator }) {
 
         <Shelve
           handleSpinner={onLoad}
-          products={products}          
+          products={products}  
+          sceneNavigator={sceneNavigator}        
         />
 
         <ViroBox

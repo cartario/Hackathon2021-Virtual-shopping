@@ -2,23 +2,27 @@ import React from 'react';
 
 import { StyleSheet } from 'react-native';
 
-import {  
+import {
   ViroText,
   ViroBox,
   ViroMaterials,
-  Viro3DObject, 
+  Viro3DObject,
   ViroSpotLight,
-  ViroNode,  
-  ViroFlexView,  
-  ViroButton,  
+  ViroNode,
+  ViroFlexView,
+  ViroButton,
   ViroAnimations,
 } from 'react-viro';
 
-import {useDispatch} from 'react-redux';
+import {ProductInfoScene} from '../scenes'
 
-import {addToCart} from '../redux/cartReducer'
+import { useDispatch } from 'react-redux';
 
-export default function Shelve({ handleSpinner, products }) {
+import { addToCart } from '../redux/cartReducer';
+
+import {setCurrentProductId} from '../redux/testReducer'
+
+export default function Shelve({ handleSpinner, products, sceneNavigator }) {
   const [loading, setLoading] = React.useState({
     shelve: true,
     objects: false,
@@ -31,9 +35,14 @@ export default function Shelve({ handleSpinner, products }) {
   const handleAddToCart = (id, price) => {
     const obj = {
       id: id,
-      price: price
-    }
-    dispatch(addToCart(obj))
+      price: price,
+    };
+    // dispatch(addToCart(obj));
+  };
+
+  const handleProductInfo = () => {
+    // dispatch(setCurrentProductId('-M_o6FqwfkgbdHPyL_My'))
+    sceneNavigator.jump({ scene:  ProductInfoScene});
   }
 
   return (
@@ -90,7 +99,6 @@ export default function Shelve({ handleSpinner, products }) {
           onDrag={() => {}}
         /> */}
 
-
       {/* Продукты */}
       {!loading.shelve &&
         products.map((product, i) => (
@@ -106,42 +114,58 @@ export default function Shelve({ handleSpinner, products }) {
           />
         ))}
 
-        {/* Информация */}
+      {/* Информация */}
       {!loading.shelve &&
         products.map((product, i) => (
           <ViroNode key={i} visible={hoveredProduct === product.name}>
             <ViroFlexView
               position={[product.position[0] + 0.2, product.position[1], product.position[2] + 1]}
-              rotation={[0, -60, 0]}              
+              rotation={[0, -60, 0]}
               width={1}
               height={0.5}
               style={styles.titleContainer}
             >
-              <ViroText style={styles.prodTitleText} text={product.title} extrusionDepth={1}/>              
+              <ViroText style={styles.prodTitleText} text={product.title} extrusionDepth={1} />
               <ViroFlexView style={styles.rowContainer}>
-                <ViroText style={styles.prodDescriptionText} text={product.description} 
-                width={1} height={0.15} 
-                extrusionDepth={1}
+                <ViroText
+                  style={styles.prodDescriptionText}
+                  text={product.description}
+                  width={1}
+                  height={0.15}
+                  extrusionDepth={1}
                 />
-                <ViroText style={styles.prodDescriptionText} text={`${product.price.toString()}РУБ./${product.priceFor}`} 
-                width={1} height={0.15} 
-                extrusionDepth={1}
+                <ViroText
+                  style={styles.prodDescriptionText}
+                  text={`${product.price.toString()}РУБ./${product.priceFor}`}
+                  width={1}
+                  height={0.15}
+                  extrusionDepth={1}
                 />
-              </ViroFlexView>
-
-              {/* <ViroFlexView style={styles.rowContainer}>
-                <ViroText style={styles.prodDescriptionText} text={`Описание: `} />
-              </ViroFlexView>
-              <ViroFlexView style={styles.rowContainer}>
-                <ViroText style={styles.prodDescriptionText} text={`Цена: `} />
-              </ViroFlexView> */}
-
+              </ViroFlexView>              
             </ViroFlexView>
             <ViroButton
-              source={require('../res/btn/add_to_cart/2-active.png')}
+              source={require('../res/btn/add_to_cart/3-active.png')}
               onClick={() => handleAddToCart(product.name, product.price)}
-              gazeSource={require('../res/btn/add_to_cart/2-hover.png')}
-              position={[product.position[0] + 0.2, product.position[1] - 0.31, product.position[2] + 1.01]}
+              gazeSource={require('../res/btn/add_to_cart/3-hover.png')}
+              position={[
+                product.position[0] + 0.2,
+                product.position[1] - 0.31,
+                product.position[2] + 1.01,
+              ]}
+              rotation={[0, -60, 0]}
+              height={0.25}
+              width={1.3925}
+            />
+
+            <ViroButton
+              source={require('../res/btn/watch/active.png')}
+              onClick={handleProductInfo}
+              gazeSource={require('../res/btn/watch/hover.png')}
+              position={[
+                product.position[0] + 0.2,
+                product.position[1] - 0.61,
+                product.position[2] + 1.01,
+              ]}
               rotation={[0, -60, 0]}
               height={0.25}
               width={1.3925}
@@ -200,7 +224,7 @@ var styles = StyleSheet.create({
     color: '#222222',
     textAlignVertical: 'center',
     textAlign: 'left',
-    flex: 1,    
+    flex: 1,
   },
 });
 
