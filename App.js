@@ -7,12 +7,12 @@ import { Provider } from 'react-redux';
 import store from './src/redux';
 import { NAVIGATOR_TYPES } from './src/utils';
 
-import { LoginScreen, WelcomeScreen } from './src/screens';
+import { LoginScreen, WelcomeScreen, MenuScreen } from './src/screens';
 
 import { SweetScene, VegetablesScene, DrinksScene, GroceryScene, ProductInfoScene} from './src/scenes';
 
 function App() {
-  const [navigatorType, setNavigatorType] = React.useState(NAVIGATOR_TYPES.login);
+  const [navigatorType, setNavigatorType] = React.useState(NAVIGATOR_TYPES.menu);
 
   const _navigateTo = (navigatorType) => {
     setNavigatorType(navigatorType);
@@ -61,6 +61,8 @@ function App() {
         );
       case NAVIGATOR_TYPES.login:
         return <LoginScreen goBack={_getHome} />;
+      case NAVIGATOR_TYPES.menu:
+          return <MenuScreen/>
       default:
         return <WelcomeScreen navigateTo={_navigateTo} />;
     }

@@ -4,6 +4,7 @@ export const NAVIGATOR_TYPES = {
   screen3: 'drinkScene',
   screen4: 'groceryScene',
   login: 'login',
+  menu: 'menu',
   arProductInfo: 'arProductInfo'
 };
 
