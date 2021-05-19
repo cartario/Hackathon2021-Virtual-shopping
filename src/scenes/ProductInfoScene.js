@@ -17,11 +17,12 @@ import {
   ViroButton,
   ViroCamera,
   Viro360Image,
+  ViroVideo,
 } from 'react-viro';
 
 import useHttp from '../hooks/useHttp';
 import { useSelector } from 'react-redux';
-import {Menu} from '../ar-components';
+import { Menu } from '../ar-components';
 
 const BASE_URL =
   'https://virtual-shoping-b52fd-default-rtdb.europe-west1.firebasedatabase.app/products';
@@ -156,16 +157,22 @@ export default function ProductScene({ sceneNavigator }) {
         animation={{ loop: false }}
         source={require('../res/scenes/product-scene-3.jpg')}
         onLoadEnd={handleBackgroundLoaded}
-       
       />
       <ViroSpinner visible={!status.image || !status.data} type="Light" position={[0, 0, -2.5]} />
 
-      <Menu sceneNavigator={sceneNavigator}/>
+      <Menu sceneNavigator={sceneNavigator} />
       <CounterControlPanel next={handleClickButton} />
-      
+
+      <ViroVideo
+        source={require('../res/video2.mp4')}
+        loop={true}
+        position={[-1, 0, -7]}
+        rotation={[-35, 0, 0]}
+        scale={[2, 2, 0]}
+      />
 
       {/*Статус загрузки*/}
-      <ViroFlexView
+      {/* <ViroFlexView
         visible={!status.image || !status.data}
         style={styles.titleContainer}
         position={[0, 3.5, -7]}
@@ -186,7 +193,7 @@ export default function ProductScene({ sceneNavigator }) {
             text={status.data ? 'Данные загружены' : 'Загрузка данных'}
           />
         </ViroFlexView>
-      </ViroFlexView>
+      </ViroFlexView> */}
 
       {/*Плашка с информацией*/}
       <ViroFlexView
@@ -231,7 +238,7 @@ export default function ProductScene({ sceneNavigator }) {
           shadowOpacity={0.7}
         />
 
-        <Viro3DObject
+        {/* <Viro3DObject
           materials={['cola']}
           source={require('../res/cola/model.obj')}
           position={[1, -0.35, -2]}
@@ -246,7 +253,7 @@ export default function ProductScene({ sceneNavigator }) {
             handleBackgroundLoaded();
           }}
           animation={{ name: 'rotateY', run: true, loop: true }}
-        />
+        /> */}
       </ViroNode>
     </ViroARScene>
   );

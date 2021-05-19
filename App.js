@@ -12,7 +12,7 @@ import { LoginScreen, WelcomeScreen, MenuScreen, CartScreen } from './src/screen
 import { SweetScene, VegetablesScene, DrinksScene, GroceryScene, ProductInfoScene} from './src/scenes';
 
 function App() {
-  const [navigatorType, setNavigatorType] = React.useState(NAVIGATOR_TYPES.login);
+  const [navigatorType, setNavigatorType] = React.useState(NAVIGATOR_TYPES.arProductInfo);
 
   const _navigateTo = (navigatorType) => {
     setNavigatorType(navigatorType);
