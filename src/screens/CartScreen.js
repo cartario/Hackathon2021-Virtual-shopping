@@ -1,34 +1,91 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import useHttp from '../hooks/useHttp';
 
 import Arrowdown from '../assets/img/arrowdown.png'
 
 import {BackButton, TrashButton, CartItem} from '../components'
 import {NAVIGATOR_TYPES} from '../utils'
+import { useSelector, useDispatch } from 'react-redux';
 
-const totalPrice = 140
+const PRODUCTS_URL = 'https://virtual-shoping-b52fd-default-rtdb.europe-west1.firebasedatabase.app/products.json';
 
 function CartScreen(props) {
   const { navigateTo } = props;
   const {container, header, bottomButton, bottomPanel} = styles;
+  const [cartItems, setCartItems] = React.useState([])
+  const [totalPrice, setTotalPrice] = React.useState(0)
+  const [trash, setTrash] = React.useState(new Set())
 
-  // const {hello} = useSelector(({test})=>test);
+  const { request, loading } = useHttp();
+  const {items} = useSelector(({cart})=> cart);
   // const dispatch = useDispatch();  
+
+  const loadProducts = async () => {
+    const data = await request(PRODUCTS_URL);
+    let result = []
+    let itemsID = Object.values(items).map((item) => item.id)
+    for(let id in data){
+        if(itemsID.includes(id)){
+            result.push({...data[id], id, amount: 1})
+        }
+    }
+    setCartItems(result)
+  }
+
+  const getTotalPrice = () => {
+        let result = 0;
+        for(let item of cartItems){
+            result += item.price * item.amount
+        }
+
+        return result;
+  }
+
+  const changeItemAmount = (id, amount) => {
+    setCartItems(arr => 
+        arr.map((item) => {
+            if(id === item.id) return {...item, amount}
+            else return item
+        })
+    )
+  }
+
+  const addToTrash = (id) => {
+    setTrash(prev => prev.add(id))
+  }
+
+  const deleteFromTrash = (id) => {
+    setTrash(prev => prev.delete(id))
+  }
+
+  const removeItemsFromCart = () => {
+    setCartItems(items => items.filter((item) => !trash.has(item.id)))
+    setTrash(new Set())
+  }
+
+  useEffect(() => {
+    loadProducts()
+  }, [])
+
+  useEffect(() => {
+    setTotalPrice(getTotalPrice())
+  }, [cartItems])
 
   return (
     <View style={container}>
         <View style={header}> 
             <BackButton text={'Корзина'} navigateTo={navigateTo}/>
-            <TrashButton/>
+            <TrashButton onPress={removeItemsFromCart}/>
         </View>
         <FlatList 
-            data={[{id: '1'},{id: '2'},{id: '3'},{id: '4'},{id: '5'},{id: '6'},{id: '7'}]}
+            data={cartItems}
             renderItem={({ item }) => (
-                <CartItem/>
+                <CartItem item={item} onAmountChange={changeItemAmount} onChecked={() => addToTrash(item.id)} onUnchecked={() => deleteFromTrash(item.id)}/>
             )}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false} 
-            contentContainerStyle={{alignItems: 'center', padding: 20, paddingTop: 30}}>
+            contentContainerStyle={{padding: 20, paddingTop: 30}}>
         </FlatList>
         <View style={bottomPanel}>
             <View style={{flexDirection:'row', alignItems: 'center'}}>

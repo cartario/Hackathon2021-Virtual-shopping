@@ -1,32 +1,50 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity } from 'react-native';
 
 import Item1 from '../assets/img/item1.png'
 import Checked from '../assets/img/checked.png'
 
-const CartItem = () => {
+const CartItem = (props) => {
+    const {item, onAmountChange, onChecked, onUnchecked} = props;
     const {container, elevation} = styles;
     const [selected, setSelected] = React.useState(false)
+    const [amount, setAmount] = React.useState(1)
 
     onSelect = () => {
-        setSelected(prev => !prev)
+        setSelected(prev => {
+            if(prev) onUnchecked()
+            else onChecked()
+            return !prev
+        })
     }
+
+    onPlus = () => {
+        setAmount(prev => prev+1)
+    }
+
+    onMinus = () => {
+        setAmount(prev => prev > 1 ? prev-1:1)
+    }
+
+    useEffect(() => {
+        onAmountChange(item.id, amount)
+    }, [amount])
 
     return (
         <View style={[container, elevation]}>
-            <View style={{height: '100%', paddingLeft: 20,alignItems: 'center', justifyContent: 'center'}} >
-                <Image style={{height: 60, width: 40}} source={Item1}></Image>
+            <View style={{height: '100%', paddingLeft: 20, alignItems: 'center', justifyContent: 'center'}} >
+                <Image resizeMode='contain' style={{height: 60, width: 40}} source={{uri: item?.picture}}></Image>
             </View>
             <View style={{flex: 1, padding: 10}}>
                 <View style={{flexDirection: 'row'}}>
                     <View style={{flex: 1}}>
-                        <Text style={{fontSize: 18, fontWeight: '500', color: '#616161'}}>Coca Cola</Text>
-                        <Text style={{fontSize: 9, fontWeight: '300', color: '#616161'}}>Напиток безалкогольн ...</Text>
+                        <Text numberOfLines={1} style={{fontSize: 18, fontWeight: '500', color: '#616161'}}>{item?.title}</Text>
+                        <Text style={{fontSize: 9, fontWeight: '300', color: '#616161'}}>{item?.description}</Text>
                     </View>
-                    <Text style={{fontSize: 20, fontWeight: '500', color: '#616161', marginRight: 20}}>70 <Text style={{fontSize: 12, fontWeight: '500', color: '#616161', opacity: 0.5}}>  руб</Text></Text>
+                    <Text style={{fontSize: 20, fontWeight: '500', color: '#616161', marginRight: 20}}>{item?.price}<Text style={{fontSize: 12, fontWeight: '500', color: '#616161', opacity: 0.5}}>  руб</Text></Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                    <ItemAmount/>
+                    <ItemAmount value={amount} onPlus={onPlus} onMinus={onMinus}/>
                     <Checkbox checked={selected} onPress={onSelect}/>
                 </View>
             </View>
@@ -34,14 +52,16 @@ const CartItem = () => {
     )
 }
 
-const ItemAmount = () => {
+const ItemAmount = (props) => {
+    const {value, onPlus, onMinus} = props;
+
     return (
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={onMinus}>
                 <Text style={{ color: '#B0B0B0', fontSize: 40}}>-</Text>
             </TouchableOpacity>
-            <Text style={{ color: '#616161', fontSize: 20, marginLeft: 10, marginRight: 10}}>1</Text>
-            <TouchableOpacity >
+            <Text style={{ color: '#616161', fontSize: 20, marginLeft: 10, marginRight: 10}}>{value}</Text>
+            <TouchableOpacity onPress={onPlus}>
                 <Text style={{ color: '#B0B0B0', fontSize: 25}}>+</Text>
             </TouchableOpacity>
         </View>
@@ -61,7 +81,7 @@ const Checkbox = (props) => {
 const styles = StyleSheet.create({
     container: {
         width: '100%', 
-        height: 106,
+        height: 110,
         backgroundColor: 'white',
         borderRadius: 17,
         flexDirection: 'row',

@@ -12,7 +12,7 @@ import { LoginScreen, WelcomeScreen, MenuScreen, CartScreen, PaymentScreen } fro
 import { SweetScene, VegetablesScene, DrinksScene, GroceryScene, ProductInfoScene} from './src/scenes';
 
 function App() {
-  const [navigatorType, setNavigatorType] = React.useState(NAVIGATOR_TYPES.payment);  
+  const [navigatorType, setNavigatorType] = React.useState(NAVIGATOR_TYPES.cart);  
 
   const _navigateTo = (navigatorType) => {
     setNavigatorType(navigatorType);
