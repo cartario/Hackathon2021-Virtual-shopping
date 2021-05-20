@@ -33,7 +33,7 @@ function CartScreen(props) {
         <View style={bottomPanel}>
             <View style={{flexDirection:'row', alignItems: 'center'}}>
                 <View style={{flex: 1, justifyContent: 'flex-end', padding: 15}}>
-                    <Text style={{fontSize: 18, color: '#616161'}}>Адрес {currentSelectedIdInCart}<Image source={Arrowdown}></Image></Text>
+                    <Text style={{fontSize: 18, color: '#616161'}}>Адрес<Image source={Arrowdown}></Image></Text>
                     <Text style={{fontSize: 12, color: '#616161'}}>Цветной бульвар, 15</Text>
                 </View>
                 <View style={{height: 30, width: 1, backgroundColor: 'rgba(0, 0, 0, 0.1)'}}/>
