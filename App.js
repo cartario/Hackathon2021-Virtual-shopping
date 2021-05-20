@@ -12,7 +12,7 @@ import { LoginScreen, WelcomeScreen, MenuScreen, CartScreen } from './src/screen
 import { SweetScene, VegetablesScene, DrinksScene, GroceryScene, ProductInfoScene} from './src/scenes';
 
 function App() {
-  const [navigatorType, setNavigatorType] = React.useState(NAVIGATOR_TYPES.arProductInfo);
+  const [navigatorType, setNavigatorType] = React.useState(NAVIGATOR_TYPES.login);  
 
   const _navigateTo = (navigatorType) => {
     setNavigatorType(navigatorType);
@@ -28,7 +28,7 @@ function App() {
         return (
           <ViroARSceneNavigator
             initialScene={{ scene: VegetablesScene }}
-            viroAppProps={{ navigateTo: _navigateTo }}
+            viroAppProps={{ navigateTo: _navigateTo}}
           />
         );
       case NAVIGATOR_TYPES.screen2:
@@ -56,7 +56,7 @@ function App() {
         return (
           <ViroARSceneNavigator
             initialScene={{ scene: ProductInfoScene }}
-            viroAppProps={{ navigateTo: _navigateTo }}
+            viroAppProps={{ navigateTo: _navigateTo}}
           />
         );
       case NAVIGATOR_TYPES.login:

@@ -72,6 +72,7 @@ const NextSectionRight = ({ next }) => {
 
 const products = [
   {
+    id: '-M_o60EsGM3ftVa4felw',
     name: 'tomato',
     materials: ['tomato'],
     position: [2, 0.8, -2],
@@ -90,6 +91,7 @@ const products = [
   //   priceFor: 'кг'
   // },
   {
+    id: '-M_o60EsGM3ftVa4felw',
     name: 'pepper',
     materials: ['pepper'],
     position: [2, -0.5, -2],
@@ -101,7 +103,7 @@ const products = [
 ];
 
 export default function VegetableScene({ sceneNavigator }) {
-  // sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.arProductInfo)
+  // sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.arProductInfo)  
 
   const [spinner, setSpinner] = React.useState(true);
 
@@ -182,14 +184,14 @@ export default function VegetableScene({ sceneNavigator }) {
         />
 
         {/* подойти к стеллажу*/}
-        <ViroBox
+        {/* <ViroBox
           position={[-1.5, -2, 3]}
           rotation={[0, 20, 0]}
           scale={[1, 1, 1]}
           materials={['redItem']}
           onDrag={() => {}}
           onClick={handleMoveCamera}
-        />
+        /> */}
       </>
     );
   };

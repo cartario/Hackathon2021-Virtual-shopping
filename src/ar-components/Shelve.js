@@ -14,13 +14,13 @@ import {
   ViroAnimations,
 } from 'react-viro';
 
-import {ProductInfoScene} from '../scenes'
+import { ProductInfoScene } from '../scenes';
 
 import { useDispatch } from 'react-redux';
 
 import { addToCart } from '../redux/cartReducer';
 
-import {setCurrentProductId} from '../redux/testReducer'
+import { setCurrentProductId } from '../redux/testReducer';
 
 export default function Shelve({ handleSpinner, products, sceneNavigator }) {
   const [loading, setLoading] = React.useState({
@@ -37,13 +37,22 @@ export default function Shelve({ handleSpinner, products, sceneNavigator }) {
       id: id,
       price: price,
     };
-    // dispatch(addToCart(obj));
+    dispatch(addToCart(obj));
   };
 
-  const handleProductInfo = () => {
-    // dispatch(setCurrentProductId('-M_o6FqwfkgbdHPyL_My'))
-    sceneNavigator.jump({ scene:  ProductInfoScene});
-  }
+
+  //TODO сейчас при просмотре товар сразу добавляется в корзину
+  const handleProductInfo = (id, price) => {
+    dispatch(setCurrentProductId(id));
+
+    const obj = {
+      id: id,
+      price: price,
+    };
+    dispatch(addToCart(obj));
+
+    sceneNavigator.jump({ scene: ProductInfoScene });
+  };
 
   return (
     <ViroNode position={[-1, -0.5, -0.5]} dragType="FixedToWorld">
@@ -133,7 +142,7 @@ export default function Shelve({ handleSpinner, products, sceneNavigator }) {
                   width={1}
                   height={0.15}
                   extrusionDepth={1}
-                />
+                />                
                 <ViroText
                   style={styles.prodDescriptionText}
                   text={`${product.price.toString()}РУБ./${product.priceFor}`}
@@ -141,11 +150,13 @@ export default function Shelve({ handleSpinner, products, sceneNavigator }) {
                   height={0.15}
                   extrusionDepth={1}
                 />
-              </ViroFlexView>              
+              </ViroFlexView>
             </ViroFlexView>
+
+
             <ViroButton
               source={require('../res/btn/add_to_cart/3-active.png')}
-              onClick={() => handleAddToCart(product.name, product.price)}
+              onClick={() => handleAddToCart(product.id, product.price)}
               gazeSource={require('../res/btn/add_to_cart/3-hover.png')}
               position={[
                 product.position[0] + 0.2,
@@ -156,10 +167,22 @@ export default function Shelve({ handleSpinner, products, sceneNavigator }) {
               height={0.25}
               width={1.3925}
             />
+            {/*дублирующий текст на случай не отрисовки кнопок */}
+            {/* <ViroText
+              position={[
+                product.position[0] + 0.2,
+                product.position[1] - 0.31,
+                product.position[2] + 1.01,
+              ]}
+              rotation={[0, -60, 0]}
+              onClick={() => handleAddToCart(product.name, product.price)}
+              text={'Add to cart'}
+              style={{fontSize: 10}}
+            /> */}
 
             <ViroButton
               source={require('../res/btn/watch/active.png')}
-              onClick={handleProductInfo}
+              onClick={() => handleProductInfo(product.id, product.price)}
               gazeSource={require('../res/btn/watch/hover.png')}
               position={[
                 product.position[0] + 0.2,
@@ -170,6 +193,18 @@ export default function Shelve({ handleSpinner, products, sceneNavigator }) {
               height={0.25}
               width={1.3925}
             />
+            {/*дублирующий текст на случай не отрисовки кнопок */}
+            {/* <ViroText
+              position={[
+                product.position[0] + 0.2,
+                product.position[1] - 0.61,
+                product.position[2] + 1.01,
+              ]}
+              rotation={[0, -60, 0]}
+              onClick={() => handleProductInfo(product.id)}
+              text={'Move to info'}
+              style={{fontSize: 10}}
+            /> */}
           </ViroNode>
         ))}
     </ViroNode>
@@ -196,7 +231,7 @@ ViroMaterials.createMaterials({
     shininess: 2.0,
     lightingModel: 'Blinn',
     cullMode: 'None',
-    diffuseTexture: require('../res/shelf/texture.jpg'),
+    diffuseTexture: require('../res/shelf/texture2.jpg'),
   },
 });
 

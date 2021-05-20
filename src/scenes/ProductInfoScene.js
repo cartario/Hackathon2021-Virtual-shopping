@@ -21,22 +21,28 @@ import {
 } from 'react-viro';
 
 import useHttp from '../hooks/useHttp';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { plusById, minusById } from '../redux/cartReducer';
 import { Menu } from '../ar-components';
+import { NAVIGATOR_TYPES } from '../utils';
 
 const BASE_URL =
   'https://virtual-shoping-b52fd-default-rtdb.europe-west1.firebasedatabase.app/products';
 
-const CounterControlPanel = ({ next }) => {
-  const [count, setCount] = React.useState(1);
+const CounterControlPanel = ({ next, currentProductId }) => {
+  const [count, setCount] = React.useState(1); 
+
+  const dispatch = useDispatch();
 
   const handlePlus = () => {
     setCount((prev) => prev + 1);
+    dispatch(plusById(currentProductId));
   };
 
   const handleMinus = () => {
     if (count > 1) {
       setCount((prev) => prev - 1);
+      dispatch(minusById(currentProductId));
     }
   };
 
@@ -53,9 +59,9 @@ const CounterControlPanel = ({ next }) => {
       ></ViroFlexView>
 
       <ViroButton
-        source={require('../res/btn/add_to_cart/active.png')}
+        source={require('../res/btn/move-to-cart/active.png')}
         onClick={next}
-        gazeSource={require('../res/btn/add_to_cart/hover.png')}
+        gazeSource={require('../res/btn/move-to-cart/hover.png')}
         position={[0, -2, -2]}
         scale={[1, 1, 1]}
         height={0.25}
@@ -73,6 +79,7 @@ const CounterControlPanel = ({ next }) => {
         width={0.25}
         onHover={handlePlus}
       />
+      <ViroText position={[-0.5, -1, -2]} text={`+`} onClick={handlePlus} />
 
       <ViroText position={[0.45, -1.25, -2]} text={count.toString()} />
 
@@ -87,6 +94,7 @@ const CounterControlPanel = ({ next }) => {
         height={0.25}
         width={0.25}
       />
+      <ViroText onClick={handleMinus} position={[0.5, -1, -2]} text={`-`} />
     </ViroNode>
   );
 };
@@ -101,6 +109,8 @@ export default function ProductScene({ sceneNavigator }) {
   });
 
   const { currentProductId } = useSelector(({ test }) => test);
+  
+
   const PRODUCT_URL = `${BASE_URL}/${currentProductId}.json`;
 
   const { request, loading } = useHttp();
@@ -129,12 +139,12 @@ export default function ProductScene({ sceneNavigator }) {
     }
   };
 
-  const handleClickButton = () => {
-    sceneNavigator.viroAppProps.navigateTo('login');
-  };
-
   const handleBackgroundLoaded = () => {
     setStatus({ ...status, image: true });
+  };
+
+  const handleMoveToCart = () => {
+    sceneNavigator.viroAppProps.navigateTo(NAVIGATOR_TYPES.cart);
   };
 
   if (!data) {
@@ -146,7 +156,7 @@ export default function ProductScene({ sceneNavigator }) {
     );
   }
 
-  const { description, picture, price, rating, title } = data;
+  const { description, price, rating, title } = data;
 
   return (
     <ViroARScene onTrackingUpdated={_onInitialized}>
@@ -161,39 +171,25 @@ export default function ProductScene({ sceneNavigator }) {
       <ViroSpinner visible={!status.image || !status.data} type="Light" position={[0, 0, -2.5]} />
 
       <Menu sceneNavigator={sceneNavigator} />
-      <CounterControlPanel next={handleClickButton} />
+      <CounterControlPanel next={handleMoveToCart} currentProductId={currentProductId} />
+
+      {/*дублирующий текст при изчезании кнопок*/}
+      {/* <ViroText
+        style={styles.prodTitleText}
+        position={[-2, 1, -2]}
+        onClick={handleMoveToCart}
+        text={`В корзину`}
+        width={4}
+        height={0.5}
+      /> */}
 
       <ViroVideo
-        source={require('../res/video2.mp4')}
+        source={require('../res/video.mp4')}
         loop={true}
-        position={[-1, 0, -7]}
+        position={[-1.7, -0.2, -7]}
         rotation={[-35, 0, 0]}
-        scale={[2, 2, 0]}
+        scale={[1.6, 1.2, 0]}
       />
-
-      {/*Статус загрузки*/}
-      {/* <ViroFlexView
-        visible={!status.image || !status.data}
-        style={styles.titleContainer}
-        position={[0, 3.5, -7]}
-        rotation={[30, 0, 0]}
-        height={2}
-        width={4}
-        animation={{ name: 'fadeOut', run: true, loop: true }}
-      >
-        <ViroFlexView style={styles.rowContainer}>
-          <ViroText
-            style={styles.prodDescriptionText}
-            text={status.image ? 'Фон загружен' : 'Загружаю фон'}
-          />
-        </ViroFlexView>
-        <ViroFlexView style={styles.rowContainer}>
-          <ViroText
-            style={styles.prodDescriptionText}
-            text={status.data ? 'Данные загружены' : 'Загрузка данных'}
-          />
-        </ViroFlexView>
-      </ViroFlexView> */}
 
       {/*Плашка с информацией*/}
       <ViroFlexView
@@ -204,7 +200,7 @@ export default function ProductScene({ sceneNavigator }) {
         height={2}
         width={4}
       >
-        <ViroText style={styles.prodTitleText} text={'О продукте:'} width={4} height={0.5} />
+        <ViroText style={styles.prodTitleText} text={`О продукте:`} width={4} height={0.5} />
         <ViroFlexView style={styles.rowContainer}>
           <ViroText style={styles.prodDescriptionText} text={`Название: ${title}`} />
         </ViroFlexView>
@@ -217,10 +213,6 @@ export default function ProductScene({ sceneNavigator }) {
         <ViroFlexView style={styles.rowContainer}>
           <ViroText style={styles.prodDescriptionText} text={`Рейтинг: ${rating}`} />
         </ViroFlexView>
-
-        {/* <ViroFlexView style={styles.rowContainer}>
-          <ViroText style={styles.prodDescriptionText} text={status.model ? 'Модель загружена' : 'Загрузка модели'} />
-        </ViroFlexView> */}
       </ViroFlexView>
 
       <ViroNode position={[-1, 0, -0.5]} dragType="FixedToWorld">
@@ -238,22 +230,24 @@ export default function ProductScene({ sceneNavigator }) {
           shadowOpacity={0.7}
         />
 
-        {/* <Viro3DObject
-          materials={['cola']}
-          source={require('../res/cola/model.obj')}
-          position={[1, -0.35, -2]}
-          rotation={[0, 90, 0]}
-          scale={[0.1, 0.1, 0.1]}
-          type="OBJ"
-          lightReceivingBitMask={5}
-          shadowCastingBitMask={4}
-          onDrag={() => {}}
-          onLoadEnd={() => {
-            setStatus({ ...status, model: true });
-            handleBackgroundLoaded();
-          }}
-          animation={{ name: 'rotateY', run: true, loop: true }}
-        /> */}
+        {data.model ? (
+          <Viro3DObject
+            materials={['cola']}
+            source={require('../res/cola/model.obj')}
+            position={[1, -0.35, -2]}
+            rotation={[0, 90, 0]}
+            scale={[0.1, 0.1, 0.1]}
+            type="OBJ"
+            lightReceivingBitMask={5}
+            shadowCastingBitMask={4}
+            onDrag={() => {}}
+            onLoadEnd={() => {
+              setStatus({ ...status, model: true });
+              handleBackgroundLoaded();
+            }}
+            animation={{ name: 'rotateY', run: true, loop: true }}
+          />
+        ) : null}
       </ViroNode>
     </ViroARScene>
   );
