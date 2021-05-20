@@ -17,6 +17,14 @@ const slice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+    setCart: (state, action)=>{     
+      const { payload } = action; //в пейлоуде передаем  обьект {id: , price: }
+
+      return {
+        ...state,
+        ...payload
+      };
+    },
     addToCart: (state, action)=>{     
       const { payload } = action; //в пейлоуде передаем  обьект {id: , price: }
 
@@ -87,6 +95,6 @@ const slice = createSlice({
   }  
 });
 
-export const {addToCart, cleanCart, removeItemById, plusById, minusById} = slice.actions;
+export const {setCart, addToCart, cleanCart, removeItemById, plusById, minusById} = slice.actions;
 
 export default slice.reducer;

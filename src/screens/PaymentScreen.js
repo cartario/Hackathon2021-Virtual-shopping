@@ -6,8 +6,7 @@ import PayCard from '../assets/img/card.jpeg'
 
 import {BackButton, CartItem} from '../components'
 import {NAVIGATOR_TYPES} from '../utils'
-
-const totalPrice = 140
+import { useSelector, useDispatch } from 'react-redux';
 
 function PaymentScreen(props) {
   const { navigateTo } = props;
@@ -22,7 +21,7 @@ function PaymentScreen(props) {
     ])
   }
 
-  // const {hello} = useSelector(({test})=>test);
+  const {totalPrice} = useSelector(({cart})=>cart);
   // const dispatch = useDispatch();  
 
   return (

@@ -7,6 +7,7 @@ import Arrowdown from '../assets/img/arrowdown.png'
 import {BackButton, TrashButton, CartItem} from '../components'
 import {NAVIGATOR_TYPES} from '../utils'
 import { useSelector, useDispatch } from 'react-redux';
+import {setCart, addToCart, removeItemById, plusById, minusById, } from '../redux/cartReducer';
 
 const PRODUCTS_URL = 'https://virtual-shoping-b52fd-default-rtdb.europe-west1.firebasedatabase.app/products.json';
 
@@ -19,14 +20,14 @@ function CartScreen(props) {
 
   const { request, loading } = useHttp();
   const {items} = useSelector(({cart})=> cart);
-  // const dispatch = useDispatch();  
+  const dispatch = useDispatch();  
 
   const loadProducts = async () => {
     const data = await request(PRODUCTS_URL);
     let result = []
     let itemsID = Object.values(items).map((item) => item.id)
     for(let id in data){
-        if(itemsID.includes(id)){
+        if(true || itemsID.includes(id)){
             result.push({...data[id], id, amount: 1})
         }
     }
@@ -64,6 +65,14 @@ function CartScreen(props) {
     setTrash(new Set())
   }
 
+  const onPay = () => {
+    dispatch(setCart({ 
+      items: cartItems,
+      totalPrice
+    }))
+    navigateTo(NAVIGATOR_TYPES.payment)
+  }
+
   useEffect(() => {
     loadProducts()
   }, [])
@@ -98,7 +107,7 @@ function CartScreen(props) {
                     <Text style={{fontSize: 36, color: '#616161'}}>5<Text style={{fontSize: 12}}>  баллов</Text></Text>
                 </View>
             </View>
-            <TouchableOpacity style={bottomButton} onPress={() => navigateTo(NAVIGATOR_TYPES.payment)}>
+            <TouchableOpacity style={bottomButton} onPress={onPay}>
                 <Text style={{ color: 'white', fontSize: 18}}>{`Оплатить ${totalPrice} руб`}</Text>
             </TouchableOpacity>
         </View>
