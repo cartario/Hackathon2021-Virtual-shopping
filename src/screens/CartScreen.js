@@ -27,7 +27,7 @@ function CartScreen(props) {
     let result = []
     let itemsID = Object.values(items).map((item) => item.id)
     for(let id in data){
-        if(true || itemsID.includes(id)){
+        if(itemsID.includes(id)){
             result.push({...data[id], id, amount: 1})
         }
     }
