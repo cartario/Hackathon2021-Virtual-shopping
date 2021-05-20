@@ -42,7 +42,8 @@ function PaymentScreen(props) {
                 </View>
                 <View style={{height: 30, width: 1, backgroundColor: 'rgba(0, 0, 0, 0.1)'}}/>
                 <View style={{justifyContent: 'flex-end', padding: 15}}>
-                    <Text style={{fontSize: 36, color: '#616161'}}>10<Text style={{fontSize: 12}}>  (x2)баллов</Text></Text>
+                    <Text style={{color: 'red', position: 'absolute', top: 15, right: 45}}>x2</Text>
+                    <Text style={{fontSize: 36, color: '#616161'}}>10<Text style={{fontSize: 12}}>  баллов</Text></Text>
                 </View>
             </View>
             <TouchableOpacity style={bottomButton} onPress={onPay}>
