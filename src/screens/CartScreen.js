@@ -7,16 +7,12 @@ import {BackButton, TrashButton, CartItem} from '../components'
 import {NAVIGATOR_TYPES} from '../utils'
 import {useSelector} from 'react-redux'
 
-
-// const totalPrice = 140
-
 function CartScreen(props) {
   const { navigateTo } = props;
   const {container, header, bottomButton, bottomPanel} = styles;
 
   const {items, totalPrice} = useSelector(({cart})=>cart);
-  const {currentSelectedIdInCart} = useSelector(({test})=>test);
-  
+  const {currentSelectedIdInCart} = useSelector(({test})=>test);  
   
   return (
     <View style={container}>
@@ -30,7 +26,7 @@ function CartScreen(props) {
                 
                 return (<CartItem productId={item} />)
             }}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item}
             showsVerticalScrollIndicator={false} 
             contentContainerStyle={{alignItems: 'center', padding: 20, paddingTop: 30}}>
         </FlatList>

@@ -20,8 +20,12 @@ const CartItem = ({productId}) => {
     const dispatch = useDispatch();
 
     onSelect = () => {
-        dispatch(setCurrentSelectedIdInCart(productId))
-        setSelected(prev => !prev)        
+        
+        setSelected(prev => !prev)  
+        
+        if(!selected){
+            dispatch(setCurrentSelectedIdInCart(productId))
+        }
     }
 
     React.useEffect(()=>{
