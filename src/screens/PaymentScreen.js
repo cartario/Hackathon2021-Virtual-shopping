@@ -1,16 +1,26 @@
 import React from 'react';
-import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, ScrollView, FlatList, Alert } from 'react-native';
 
 import Arrowdown from '../assets/img/arrowdown.png'
+import PayCard from '../assets/img/card.jpeg'
 
-import {BackButton, TrashButton, CartItem} from '../components'
+import {BackButton, CartItem} from '../components'
 import {NAVIGATOR_TYPES} from '../utils'
 
 const totalPrice = 140
 
-function CartScreen(props) {
+function PaymentScreen(props) {
   const { navigateTo } = props;
   const {container, header, bottomButton, bottomPanel} = styles;
+
+  const onPay = () => {
+    Alert.alert('Заказ принят в обработку', 'Чтобы продолжить покупки, нажмите Далее', [
+        {
+            text: 'Дaлее',
+            onPress: () => navigateTo(NAVIGATOR_TYPES.menu)
+        }
+    ])
+  }
 
   // const {hello} = useSelector(({test})=>test);
   // const dispatch = useDispatch();  
@@ -18,18 +28,12 @@ function CartScreen(props) {
   return (
     <View style={container}>
         <View style={header}> 
-            <BackButton text={'Корзина'} navigateTo={navigateTo}/>
-            <TrashButton/>
+            <BackButton text={'Способы оплаты'} navigateTo={navigateTo}/>
         </View>
-        <FlatList 
-            data={[{id: '1'},{id: '2'},{id: '3'},{id: '4'},{id: '5'},{id: '6'},{id: '7'}]}
-            renderItem={({ item }) => (
-                <CartItem/>
-            )}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false} 
-            contentContainerStyle={{alignItems: 'center', padding: 20, paddingTop: 30}}>
-        </FlatList>
+       <View style={{flex: 1}}>
+            <Image resizeMode='contain' style={{width: '100%'}} source={PayCard}/>
+            <Text style={{fontSize: 12, color: '#616161', padding: 20, paddingTop: 0}}>С картой ВТБхMAGNIT получайте в два раза больше бонусных баллов за покупки!</Text>
+       </View>
         <View style={bottomPanel}>
             <View style={{flexDirection:'row', alignItems: 'center'}}>
                 <View style={{flex: 1, justifyContent: 'flex-end', padding: 15}}>
@@ -38,10 +42,10 @@ function CartScreen(props) {
                 </View>
                 <View style={{height: 30, width: 1, backgroundColor: 'rgba(0, 0, 0, 0.1)'}}/>
                 <View style={{justifyContent: 'flex-end', padding: 15}}>
-                    <Text style={{fontSize: 36, color: '#616161'}}>5<Text style={{fontSize: 12}}>  баллов</Text></Text>
+                    <Text style={{fontSize: 36, color: '#616161'}}>10<Text style={{fontSize: 12}}>  (x2)баллов</Text></Text>
                 </View>
             </View>
-            <TouchableOpacity style={bottomButton} onPress={() => navigateTo(NAVIGATOR_TYPES.payment)}>
+            <TouchableOpacity style={bottomButton} onPress={onPay}>
                 <Text style={{ color: 'white', fontSize: 18}}>{`Оплатить ${totalPrice} руб`}</Text>
             </TouchableOpacity>
         </View>
@@ -86,4 +90,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CartScreen
+export default PaymentScreen

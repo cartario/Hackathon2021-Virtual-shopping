@@ -6,6 +6,7 @@ export const NAVIGATOR_TYPES = {
   login: 'login',
   menu: 'menu',
   cart: 'cart',
+  payment: 'payment',
   arProductInfo: 'arProductInfo'
 };
 
