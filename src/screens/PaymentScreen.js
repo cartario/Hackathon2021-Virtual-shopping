@@ -6,12 +6,14 @@ import PayCard from '../assets/img/card.jpeg'
 
 import {BackButton, CartItem} from '../components'
 import {NAVIGATOR_TYPES} from '../utils'
+import {useSelector} from 'react-redux'
 
-const totalPrice = 140
+// const totalPrice = 140
 
 function PaymentScreen(props) {
   const { navigateTo } = props;
   const {container, header, bottomButton, bottomPanel} = styles;
+  const {totalPrice}  = useSelector(({cart})=>cart);
 
   const onPay = () => {
     Alert.alert('Заказ принят в обработку', 'Чтобы продолжить покупки, нажмите Далее', [

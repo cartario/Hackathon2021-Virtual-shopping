@@ -91,7 +91,7 @@ const products = [
   //   priceFor: 'кг'
   // },
   {
-    id: '-M_o60EsGM3ftVa4felw',
+    id: '-M_o6FqwfkgbdHPyL_My',
     name: 'pepper',
     materials: ['pepper'],
     position: [2, -0.5, -2],

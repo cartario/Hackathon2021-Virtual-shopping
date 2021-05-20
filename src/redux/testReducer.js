@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   hello: '',
-  currentProductId: ''
+  currentProductId: '',
+  currentSelectedIdInCart: ''
 }
 
 const slice = createSlice({
@@ -14,10 +15,13 @@ const slice = createSlice({
     },
     setCurrentProductId: (state, action) => {
       state.currentProductId = action.payload
+    },
+    setCurrentSelectedIdInCart: (state, action) => {
+      state.currentSelectedIdInCart = action.payload
     }
   }
 });
 
-export const {setHello, setCurrentProductId} = slice.actions;
+export const {setHello, setCurrentProductId, setCurrentSelectedIdInCart} = slice.actions;
 
 export default slice.reducer;

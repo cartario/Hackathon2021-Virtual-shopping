@@ -37,7 +37,7 @@ function MenuScreen(props) {
             <View style={{width: 150, height: 150, borderRadius: 75, overflow: 'hidden'}}>
                 <Image source={Avatar}></Image>
             </View>
-            <Text style={{fontSize: 24, color: '#616161', marginTop: 10}}>Вылерия</Text>
+            <Text style={{fontSize: 24, color: '#616161', marginTop: 10}}>Валерия</Text>
             <Text style={{fontSize: 18, fontWeight: '300', color: '#616161', marginTop: 10}}>+7 (900) 852-32-85</Text>
             <TouchableOpacity style={changeUserButton}
             onPress={handleMoveToLogin}

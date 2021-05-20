@@ -6,6 +6,7 @@ import Checked from '../assets/img/checked.png'
 import useHttp from '../hooks/useHttp'
 import {plusById, minusById, cleanCart} from '../redux/cartReducer'
 import {useDispatch, useSelector} from 'react-redux'
+import {setCurrentSelectedIdInCart} from '../redux/testReducer'
 
 const PRODUCTS_URL =
   'https://virtual-shoping-b52fd-default-rtdb.europe-west1.firebasedatabase.app/products';
@@ -16,9 +17,11 @@ const CartItem = ({productId}) => {
     const [data, setData] = React.useState(null)
     const {request} = useHttp();
 
+    const dispatch = useDispatch();
 
     onSelect = () => {
-        setSelected(prev => !prev)
+        dispatch(setCurrentSelectedIdInCart(productId))
+        setSelected(prev => !prev)        
     }
 
     React.useEffect(()=>{
@@ -34,12 +37,12 @@ const CartItem = ({productId}) => {
         return null;
     }
 
-    const { description, price, rating, title } = data;
+    const { description, price, title, picture } = data;
 
     return (
         <View style={[container, elevation]}>
             <View style={{height: '100%', paddingLeft: 20,alignItems: 'center', justifyContent: 'center'}} >
-                <Image style={{height: 60, width: 40}} source={Item1}></Image>
+                <Image style={{height: 60, width: 40}} source={{uri: picture}}></Image>
             </View>
             <View style={{flex: 1, padding: 10}}>
                 <View style={{flexDirection: 'row'}}>

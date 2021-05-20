@@ -15,19 +15,21 @@ function CartScreen(props) {
   const {container, header, bottomButton, bottomPanel} = styles;
 
   const {items, totalPrice} = useSelector(({cart})=>cart);
-
-
+  const {currentSelectedIdInCart} = useSelector(({test})=>test);
+  
+  
   return (
     <View style={container}>
         <View style={header}> 
             <BackButton text={'Корзина'} navigateTo={navigateTo}/>
-            <TrashButton/>
+            <TrashButton />
         </View>
         <FlatList 
             data={Object.keys(items)}
-            renderItem={({ item }) => (
-                <CartItem productId={item}/>
-            )}
+            renderItem={({ item }) => {
+                
+                return (<CartItem productId={item} />)
+            }}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false} 
             contentContainerStyle={{alignItems: 'center', padding: 20, paddingTop: 30}}>
@@ -35,7 +37,7 @@ function CartScreen(props) {
         <View style={bottomPanel}>
             <View style={{flexDirection:'row', alignItems: 'center'}}>
                 <View style={{flex: 1, justifyContent: 'flex-end', padding: 15}}>
-                    <Text style={{fontSize: 18, color: '#616161'}}>Адрес<Image source={Arrowdown}></Image></Text>
+                    <Text style={{fontSize: 18, color: '#616161'}}>Адрес {currentSelectedIdInCart}<Image source={Arrowdown}></Image></Text>
                     <Text style={{fontSize: 12, color: '#616161'}}>Цветной бульвар, 15</Text>
                 </View>
                 <View style={{height: 30, width: 1, backgroundColor: 'rgba(0, 0, 0, 0.1)'}}/>
