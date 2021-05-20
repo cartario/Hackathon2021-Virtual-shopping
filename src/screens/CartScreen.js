@@ -5,15 +5,17 @@ import Arrowdown from '../assets/img/arrowdown.png'
 
 import {BackButton, TrashButton, CartItem} from '../components'
 import {NAVIGATOR_TYPES} from '../utils'
+import {useSelector} from 'react-redux'
 
-const totalPrice = 140
+
+// const totalPrice = 140
 
 function CartScreen(props) {
   const { navigateTo } = props;
   const {container, header, bottomButton, bottomPanel} = styles;
 
-  // const {hello} = useSelector(({test})=>test);
-  // const dispatch = useDispatch();  
+  const {items, totalPrice} = useSelector(({cart})=>cart);
+
 
   return (
     <View style={container}>
@@ -22,9 +24,9 @@ function CartScreen(props) {
             <TrashButton/>
         </View>
         <FlatList 
-            data={[{id: '1'},{id: '2'},{id: '3'},{id: '4'},{id: '5'},{id: '6'},{id: '7'}]}
+            data={Object.keys(items)}
             renderItem={({ item }) => (
-                <CartItem/>
+                <CartItem productId={item}/>
             )}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false} 

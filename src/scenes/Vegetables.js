@@ -72,7 +72,7 @@ const NextSectionRight = ({ next }) => {
 
 const products = [
   {
-    id: '-M_o60EsGM3ftVa4felw',
+    id: '-M_oASOGR-aX3VTO3fzr',
     name: 'tomato',
     materials: ['tomato'],
     position: [2, 0.8, -2],

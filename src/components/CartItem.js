@@ -3,14 +3,38 @@ import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity } from 'reac
 
 import Item1 from '../assets/img/item1.png'
 import Checked from '../assets/img/checked.png'
+import useHttp from '../hooks/useHttp'
+import {plusById, minusById, cleanCart} from '../redux/cartReducer'
+import {useDispatch, useSelector} from 'react-redux'
 
-const CartItem = () => {
+const PRODUCTS_URL =
+  'https://virtual-shoping-b52fd-default-rtdb.europe-west1.firebasedatabase.app/products';
+
+const CartItem = ({productId}) => {
     const {container, elevation} = styles;
-    const [selected, setSelected] = React.useState(false)
+    const [selected, setSelected] = React.useState(false);
+    const [data, setData] = React.useState(null)
+    const {request} = useHttp();
+
 
     onSelect = () => {
         setSelected(prev => !prev)
     }
+
+    React.useEffect(()=>{
+        const fetchProduct = async () => {
+            const response = await request(`${PRODUCTS_URL}/${productId}.json`);
+            setData(response);
+        }
+
+        fetchProduct()
+    }, [])
+
+    if(!data){
+        return null;
+    }
+
+    const { description, price, rating, title } = data;
 
     return (
         <View style={[container, elevation]}>
@@ -20,13 +44,13 @@ const CartItem = () => {
             <View style={{flex: 1, padding: 10}}>
                 <View style={{flexDirection: 'row'}}>
                     <View style={{flex: 1}}>
-                        <Text style={{fontSize: 18, fontWeight: '500', color: '#616161'}}>Coca Cola</Text>
-                        <Text style={{fontSize: 9, fontWeight: '300', color: '#616161'}}>Напиток безалкогольн ...</Text>
+                        <Text style={{fontSize: 18, fontWeight: '500', color: '#616161'}}>{title}</Text>
+                        <Text style={{fontSize: 9, fontWeight: '300', color: '#616161'}}>{description}</Text>
                     </View>
-                    <Text style={{fontSize: 20, fontWeight: '500', color: '#616161', marginRight: 20}}>70 <Text style={{fontSize: 12, fontWeight: '500', color: '#616161', opacity: 0.5}}>  руб</Text></Text>
+                    <Text style={{fontSize: 20, fontWeight: '500', color: '#616161', marginRight: 20}}>{price} <Text style={{fontSize: 12, fontWeight: '500', color: '#616161', opacity: 0.5}}>  руб</Text></Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                    <ItemAmount/>
+                    <ItemAmount productId={productId}/>
                     <Checkbox checked={selected} onPress={onSelect}/>
                 </View>
             </View>
@@ -34,14 +58,17 @@ const CartItem = () => {
     )
 }
 
-const ItemAmount = () => {
+const ItemAmount = ({productId}) => {
+    const dispatch = useDispatch();
+    const {items} = useSelector(({cart})=>cart);
+
     return (
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={()=>dispatch(minusById(productId))}>
                 <Text style={{ color: '#B0B0B0', fontSize: 40}}>-</Text>
             </TouchableOpacity>
-            <Text style={{ color: '#616161', fontSize: 20, marginLeft: 10, marginRight: 10}}>1</Text>
-            <TouchableOpacity >
+            <Text style={{ color: '#616161', fontSize: 20, marginLeft: 10, marginRight: 10}}>{items[productId].length}</Text>
+            <TouchableOpacity onPress={()=>dispatch(plusById(productId))}>
                 <Text style={{ color: '#B0B0B0', fontSize: 25}}>+</Text>
             </TouchableOpacity>
         </View>
